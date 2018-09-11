@@ -12,7 +12,7 @@
 		 loadGraphic("assets/images/duck.png", true, 100, 114);
 		 setFacingFlip(FlxObject.LEFT, true, false);
 		 setFacingFlip(FlxObject.RIGHT,false,false);
-		 animation.add("walk", [0, 1, 0, 2], 10, true);
+		 animation.add("walk", [0, 3, 0, 2], 10, true);
 		 animation.play("walk");
 		 facing = FlxObject.LEFT;
      }
