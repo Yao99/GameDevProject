@@ -8,8 +8,8 @@ class PlayState extends FlxState {
 	
 	override public function create():Void
 	{
-		//start with frog
-		_player = new Player(20,20, 0);
+		//pass 0 for frog, 1 for elephant
+		_player = new Player(20,20, 1);
 		add(_player);
 		super.create();
 	}
