@@ -14,11 +14,11 @@
      public function new(?X:Float=0, ?Y:Float=0, species:Float) {
          super(X, Y);
          if (species == 0) {
-         	loadGraphic("assets/images/FrogWalk.png", true, 80, 85);
+         	loadGraphic("assets/images/Frog.png", true, 80, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 1, 2], 4, true);
-         	animation.add("idle", [0], 1, false);
+         	animation.add("idle", [0, 0, 0, 3], 1, false);
          }
 		 /*loadGraphic("assets/images/duck.png", true, 100, 114);
 		 setFacingFlip(FlxObject.LEFT, true, false);
