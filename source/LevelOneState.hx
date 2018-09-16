@@ -1,6 +1,9 @@
 package;
 
 import flixel.FlxState;
+import flixel.FlxSprite;
+import flixel.FlxObject;
+import flixel.FlxG;
 
 
 /*
@@ -9,6 +12,8 @@ import flixel.FlxState;
 class LevelOneState extends FlxState {
 	
 	var _player:Player;
+	var _key:FlxSprite;
+	var has_key:Bool;
 	var _map:TiledMap;
 	var _mWalls:FlxTilemap;
 	var _mSpikes:FlxTilemap;
@@ -38,6 +43,12 @@ class LevelOneState extends FlxState {
 			placeEntities(e.type, e.xmlData.x);
 		}
 		add(_player);
+
+		//adding a key
+		_key = new FlxSprite(300, 50, "assets/images/Key.png");
+		has_key = false;
+		add(_key);
+		
 		super.create();
 	}
 
@@ -45,6 +56,7 @@ class LevelOneState extends FlxState {
 	{
 		super.update(elapsed);
 		FlxG.collide(_player, _mWalls);
+		FlxG.collide(_player,_key,collectKey);
 	}
 
 	function placeEntities(entityName:String, entityData.Xml):Void {
@@ -54,5 +66,11 @@ class LevelOneState extends FlxState {
 			_player.x = x;
 			_player.y = y;
 		}
+	} 
+
+	public function collectKey(object1:FlxObject, object2:FlxObject){
+		//some collect key sound
+		has_key = true;
+		_key.kill();
 	}
 }
