@@ -19,6 +19,12 @@
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 1, 2], 4, true);
          	animation.add("idle", [0, 0, 0, 3], 1, false);
+         } else if (species == 1) {
+         	loadGraphic("assets/images/Elephant.png", true, 137, 125);
+         	setFacingFlip(FlxObject.LEFT, true, false);
+         	setFacingFlip(FlxObject.RIGHT, false, false);
+         	animation.add("walk", [0, 2, 10], 3, true);
+         	animation.add("idle", [10, 10, 10, 0, 0], 1, false);
          }
 		 /*loadGraphic("assets/images/duck.png", true, 100, 114);
 		 setFacingFlip(FlxObject.LEFT, true, false);
@@ -31,6 +37,8 @@
 		 //makeGraphic(40, 60, FlxColor.WHITE);
 
 		 drag.x = drag.y = 1600;
+		 setSize(70,72);
+		 offset.set(2, 0);
 
      }
      function movement():Void {
