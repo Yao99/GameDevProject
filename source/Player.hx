@@ -37,6 +37,8 @@
 		 //makeGraphic(40, 60, FlxColor.WHITE);
 
 		 drag.x = drag.y = 1600;
+		 setSize(70,72);
+		 offset.set(2, 0);
 
      }
      function movement():Void {
