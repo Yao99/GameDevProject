@@ -29,7 +29,7 @@ class LevelOneState extends FlxState {
 		_mSpikes = new FlxTilemap();
 		_mFan = new FlxTilemap();
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.tileset__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		for (i in 11...17) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);
 /*		_mSpikes.loadMapFromArray(cast(_map.getLayer("spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
