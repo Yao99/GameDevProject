@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="assets" tilewidth="75" tileheight="150" tilecount="18" columns="0">
+<tileset name="assets" tilewidth="75" tileheight="150" tilecount="19" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="75" height="75" source="PlatformAssets/CollapseBallonPart1.png"/>
@@ -54,5 +54,8 @@
  </tile>
  <tile id="18">
   <image width="75" height="150" source="PlatformAssets/FloatySpike.png"/>
+ </tile>
+ <tile id="19">
+  <image width="75" height="75" source="PlatformAssets/Key.png"/>
  </tile>
 </tileset>
