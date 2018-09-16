@@ -56,6 +56,6 @@
   <image width="75" height="150" source="PlatformAssets/FloatySpike.png"/>
  </tile>
  <tile id="19">
-  <image width="75" height="75" source="PlatformAssets/Key.png"/>
+  <image width="64" height="48" source="PlatformAssets/Key.png"/>
  </tile>
 </tileset>
