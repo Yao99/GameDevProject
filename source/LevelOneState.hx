@@ -4,6 +4,9 @@ import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.FlxG;
+import flixel.addons.editors.tiled.*;
+import flixel.tile.FlxTilemap;
+import flixel.tile.FlxBaseTilemap;
 
 
 /*
@@ -21,23 +24,25 @@ class LevelOneState extends FlxState {
 	
 	override public function create():Void {
 		//load in first map
-		_map = new TiledMap(AssetPaths.firstmapdraft_tmx);
+		_map = new TiledMap(AssetPaths.firstmapdraft__tmx);
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
 		_mFan = new FlxTilemap();
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.assets1stMap_tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		_mWalls.setTileProperties()
+			AssetPaths.tileset__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+		for (i in 11...17) 
+			_mWalls.setTileProperties(i, FlxObject.ANY);
 /*		_mSpikes.loadMapFromArray(cast(_map.getLayer("spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.assets1stMap_tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		_mFan.loadMapFromArray(cast(_map.getLayer("fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.assets1stMap_tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		*/_mWalls.follow();
+		*/
+		_mWalls.follow();
 		//collision directions for walls, spikes, and fans
 		add(_mWalls);
 
 		//pass 0 for frog, 1 for elephant
-		_player = new Player(0);
+		_player = new Player(0, 0, 0);
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		for (e in tmpMap.objects) {
 			placeEntities(e.type, e.xmlData.x);
@@ -59,7 +64,7 @@ class LevelOneState extends FlxState {
 		FlxG.collide(_player,_key,collectKey);
 	}
 
-	function placeEntities(entityName:String, entityData.Xml):Void {
+	function placeEntities(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		if (entityName == "player") {
