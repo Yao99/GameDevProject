@@ -6,10 +6,15 @@
  import flixel.math.FlxPoint;
  import flixel.system.FlxAssets.FlxGraphicAsset;
  import flixel.util.FlxColor;
+ import flixel.math.FlxMath;
 
  class Player extends FlxSprite {
- 	public var speed:Float = 200;	
- 	public var gravity = 200;
+	 
+	//movement
+ 	public var speed_limit:Float = 200;	
+ 	public var gravity:Float = 200;
+	public var xVelocity:Float = 0;
+    public var yVelocity:Float = 0;
 
     public function new(?X:Float=0, ?Y:Float=0, species:Float) {
          super(X, Y);
@@ -39,20 +44,17 @@
 		 drag.x = drag.y = 1600;
 
      }
+	 
      function movement():Void {
      	var _left = false;
      	var _right = false;
      	var _jump = false;
-     	var mA:Float = 0;		//angle of travel, up -> <0
-     	var yVelocity = 0;
 
  		_left = FlxG.keys.anyPressed([LEFT, A]);
  		_right = FlxG.keys.anyPressed([RIGHT, D]);
  		_jump = FlxG.keys.anyPressed([SPACE]);
-
- 		/*
- 		 *	<Temporary> reset
-		*/
+		
+		//reset !!!!!!!!!!!!!!!!REMOVE LATER!!!!!!!!!!!!!!!!!!
 		var _reset = false;
 		_reset = FlxG.keys.anyPressed([BACKSPACE]);
 		if (_reset) {
@@ -62,37 +64,27 @@
  		//cancel opposing directions
  		if (_left && _right)
  			_left = _right = false;
-
- 		if (_left || _right || _jump) {
-			if (_jump) {
-			    mA = -90;
-			    yVelocity = gravity;
-			    if (_left)
-			        mA -= 45;
-			    else if (_right)
-			        mA += 45;
-			} else if (_left) {
-			    mA = 180;
-			    velocity.set(speed, 0);
-				velocity.rotate(FlxPoint.weak(0,0), mA);
-				facing = FlxObject.LEFT;
-				animation.play("walk");
-				
-			}
-			else if (_right) {
-			    mA = 0;
-			    velocity.set(speed, 0);
-				velocity.rotate(FlxPoint.weak(0,0), mA);
-				facing = FlxObject.RIGHT;
-				animation.play("walk");
-				
-			} 
-
-			/*velocity.set(speed, yVelocity);
-			velocity.rotate(FlxPoint.weak(0,0), mA);*/
-		} else {
-				animation.play("idle");
+		
+		//directions
+		if (_left) {
+			xVelocity = FlxMath.lerp(xVelocity, speed_limit, .5);
+			velocity.rotate(FlxPoint.weak(0,0), 180);
+			facing = FlxObject.LEFT;
+			animation.play("walk");				
+		}else if (_right) {
+		    xVelocity = FlxMath.lerp(xVelocity, -speed_limit, .5);
+			velocity.rotate(FlxPoint.weak(0,0), 0);
+			facing = FlxObject.LEFT;
+			animation.play("walk");			
+		}else if (_jump) {
+			yVelocity = 200;
+			facing = FlxObject.LEFT;
+			animation.play("walk");
+		}else{
+			animation.play("idle");
 		}
+
+		acceleration.y = gravity;
     }
 
     override public function update(elapsed:Float):Void {
