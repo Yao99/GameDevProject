@@ -26,23 +26,23 @@ class LevelOneState extends FlxState {
 		//load in first map
 		_map = new TiledMap(AssetPaths.firstmapdraft__tmx);
 		_mWalls = new FlxTilemap();
-		_mSpikes = new FlxTilemap();
-		_mFan = new FlxTilemap();
+		/*_mSpikes = new FlxTilemap();
+		_mFan = new FlxTilemap();*/
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 0, 1, 3);
 		for (i in 11...17) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);
-		_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
+		/*_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 0, 1, 3);
 		_mSpikes.setTileProperties(10, FlxObject.ANY);
-		_mSpikes.setTileProperties(20, FlxObject.ANY);
+		_mSpikes.setTileProperties(20, FlxObject.ANY);*/
 		/*_mFan.loadMapFromArray(cast(_map.getLayer("fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.assets1stMap_tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		*/
 		//_mWalls.follow();
 		//collision directions for walls, spikes, and fans
 		add(_mWalls);
-		add(_mSpikes);
+		//add(_mSpikes);
 
 		//pass 0 for frog, 1 for elephant
 		_player = new Player(0, 0, 0);
@@ -53,9 +53,9 @@ class LevelOneState extends FlxState {
 		add(_player);
 
 		//(0, 1950) for start
-		FlxG.camera.setPosition(2250, 2550);
-		FlxG.camera.setSize(18, 12);
-		FlxG.camera.follow(_player, PLATFORMER, 1);
+		//FlxG.camera.setPosition(0, 540);
+		FlxG.camera.setSize(1350, 750);
+		FlxG.camera.follow(_player, LOCKON, 1);
 
 		//adding a key
 		/*_key = new FlxSprite(300, 50, "assets/images/Key.png");
@@ -69,7 +69,7 @@ class LevelOneState extends FlxState {
 	{
 		super.update(elapsed);
 		FlxG.collide(_player, _mWalls);
-		FlxG.overlap(_player, _mSpikes, playerPop);
+		//FlxG.overlap(_player, _mSpikes, playerPop);
 		FlxG.overlap(_player,_key, collectKey);
 	}
 
