@@ -15,8 +15,8 @@ import flixel.tile.FlxBaseTilemap;
 class LevelOneState extends FlxState {
 	
 	var _player:Player;
-	var _key:FlxSprite;
-	var has_key:Bool;
+	var _key:FlxSprite; // should key be a custom class?
+	var has_key:Bool = false;
 	var _map:TiledMap;
 	var _mWalls:FlxTilemap;
 	var _mSpikes:FlxTilemap;
@@ -29,12 +29,14 @@ class LevelOneState extends FlxState {
 		_mSpikes = new FlxTilemap();
 		_mFan = new FlxTilemap();
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 0, 1, 3);
 		for (i in 11...17) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);
-/*		_mSpikes.loadMapFromArray(cast(_map.getLayer("spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.assets1stMap_tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		_mFan.loadMapFromArray(cast(_map.getLayer("fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
+		/*_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
+			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 0, 1, 3);
+		_mSpikes.setTileProperties(10, FlxObject.ANY);
+		_mSpikes.setTileProperties(20, FlxObject.ANY);*/
+		/*_mFan.loadMapFromArray(cast(_map.getLayer("fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.assets1stMap_tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		*/
 		_mWalls.follow();
@@ -50,9 +52,9 @@ class LevelOneState extends FlxState {
 		add(_player);
 
 		//adding a key
-		_key = new FlxSprite(300, 50, "assets/images/Key.png");
+		/*_key = new FlxSprite(300, 50, "assets/images/Key.png");
 		has_key = false;
-		add(_key);
+		add(_key);*/
 		
 		super.create();
 	}
@@ -61,7 +63,8 @@ class LevelOneState extends FlxState {
 	{
 		super.update(elapsed);
 		FlxG.collide(_player, _mWalls);
-		FlxG.collide(_player,_key,collectKey);
+		//FlxG.overlap(_player, _mSpikes, playerPop);
+		FlxG.overlap(_player,_key, collectKey);
 	}
 
 	function placeEntities(entityName:String, entityData:Xml):Void {
@@ -73,9 +76,15 @@ class LevelOneState extends FlxState {
 		}
 	} 
 
-	public function collectKey(object1:FlxObject, object2:FlxObject){
+	function collectKey(object1:FlxObject, object2:FlxObject):Void {
 		//some collect key sound
 		has_key = true;
 		_key.kill();
+	}
+
+	function playerPop(object1:FlxObject, object2:FlxObject):Void {
+		//player runs into spikes and dies
+		_player.kill();
+		//display gameover message and return to menuState
 	}
 }

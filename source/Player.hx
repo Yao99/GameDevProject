@@ -11,7 +11,7 @@
  	public var speed:Float = 200;	
  	public var gravity = 200;
 
-     public function new(?X:Float=0, ?Y:Float=0, species:Float) {
+    public function new(?X:Float=0, ?Y:Float=0, species:Float) {
          super(X, Y);
          if (species == 0) {
          	loadGraphic("assets/images/Frog.png", true, 80, 85);
