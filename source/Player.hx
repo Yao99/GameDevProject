@@ -12,7 +12,7 @@
 	 
 	//movement
  	public var speed_limit:Float = 200;	
- 	public var gravity:Float = 200;
+ 	public var gravity:Float = 2000;
 	public var xVelocity:Float = 0;
     public var yVelocity:Float = 0;
 
@@ -67,24 +67,31 @@
 		
 		//directions
 		if (_left) {
-			xVelocity = FlxMath.lerp(xVelocity, speed_limit, .5);
+			xVelocity = FlxMath.lerp(xVelocity, -speed_limit, .5);
 			velocity.rotate(FlxPoint.weak(0,0), 180);
 			facing = FlxObject.LEFT;
 			animation.play("walk");				
 		}else if (_right) {
-		    xVelocity = FlxMath.lerp(xVelocity, -speed_limit, .5);
+		    xVelocity = FlxMath.lerp(xVelocity, speed_limit, .5);
 			velocity.rotate(FlxPoint.weak(0,0), 0);
 			facing = FlxObject.LEFT;
 			animation.play("walk");			
-		}else if (_jump) {
-			yVelocity = 200;
+		}else{
+			xVelocity = FlxMath.lerp(xVelocity, 0, .9);
+		}
+		
+		if (_jump) {
+			yVelocity = -200;
 			facing = FlxObject.LEFT;
 			animation.play("walk");
-		}else{
+		}
+		
+		if (!_jump && !_left && !_right){
 			animation.play("idle");
 		}
 
-		acceleration.y = gravity;
+		velocity.x = xVelocity;
+		velocity.y = FlxMath.lerp(yVelocity,100,.5);
     }
 
     override public function update(elapsed:Float):Void {
