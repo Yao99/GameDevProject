@@ -61,13 +61,6 @@
  		_right = FlxG.keys.anyPressed([RIGHT, D]);
  		_jump = FlxG.keys.justPressed.SPACE;
 		
-		//reset !!!!!!!!!!!!!!!!REMOVE LATER!!!!!!!!!!!!!!!!!!
-		/*var _reset = false;
-		_reset = FlxG.keys.anyPressed([BACKSPACE]);
-		if (_reset) {
-			x = y = 100;
-		}*/
-
 		acceleration.x = 0;
 		
 
@@ -94,6 +87,7 @@
  		} else 
  			animation.play("idle");
 
+ 		//reset !!!!!!!!!!!!!!!!REMOVE LATER!!!!!!!!!!!!!!!!!!	
  		if (FlxG.keys.pressed.BACKSPACE) {
  			x = 0;
  			y = 2475;
