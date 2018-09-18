@@ -43,6 +43,7 @@ class LevelOneState extends FlxState {
 		*/
 		//_mWalls.follow();
 		//collision directions for walls, spikes, and fans
+		_mWalls.immovable = true;
 		add(_mWalls);
 		add(_mSpikes);
 
@@ -71,7 +72,7 @@ class LevelOneState extends FlxState {
 
 	override public function update(elapsed:Float):Void
 	{
-		FlxG.collide(_player, _mWalls);
+		FlxG.collide(_mWalls,cast(_player,FlxSprite));
 		if ((_player.isTouching(FlxObject.FLOOR)))
 			_player.touchingFloor = true;
 		else 
