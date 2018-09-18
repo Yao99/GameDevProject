@@ -7,7 +7,8 @@
  import flixel.system.FlxAssets.FlxGraphicAsset;
  import flixel.util.FlxColor;
  import flixel.math.FlxMath;
-
+ import flixel.system.FlxSound;
+ 
  class Player extends FlxSprite {
 	 
 	//movement
@@ -16,9 +17,12 @@
 	public var xVelocity:Float = 0;
     public var yVelocity:Float = 0;
     public var touchingFloor:Bool = true;
+	//sounds
+	public var _sndJump:FlxSound;
 
     public function new(?X:Float=0, ?Y:Float=0, species:Float) {
          super(X, Y);
+		 _sndJump = FlxG.sound.load(AssetPaths.Ribbit__wav);
          if (species == 0) {
          	loadGraphic("assets/images/Frog1.png", true, 81, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
@@ -71,6 +75,7 @@
  		if (_left || _right || _jump) {
  			if (_jump && touchingFloor) {
  				velocity.y = -maxVelocity.y / 2;
+				_sndJump.play();
  			}
 
  			if (_left && !_right) {
