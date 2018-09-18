@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.addons.editors.tiled.*;
+import flixel.addons.tile.*;
 import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
 import flixel.text.FlxText;
@@ -25,7 +26,7 @@ class LevelOneState extends FlxState {
 	
 	override public function create():Void {
 		//load in first map
-		_map = new TiledMap(AssetPaths.firstmapdraft_fixed__tmx);
+		_map = new TiledMap(AssetPaths.firstmapdraft__tmx);
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
 		_mFan = new FlxTilemap();
@@ -46,17 +47,17 @@ class LevelOneState extends FlxState {
 		add(_mSpikes);
 
 		//pass 0 for frog, 1 for elephant
-		_player = new Player(0, 2475, 0);
-		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
+		_player = new Player(0, 2400, 0);
+		/*var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		for (e in tmpMap.objects) {
 			placeEntities(e.type, e.xmlData.x);
-		}
+		}*/
 		add(_player);
 
 		//(0, 1950) for start
 		//FlxG.camera.setPosition(0, 540);
 		FlxG.camera.setSize(1350, 750);
-		FlxG.camera.follow(_player, LOCKON, 1);
+		FlxG.camera.follow(_player, PLATFORMER, 1);
 		FlxG.worldBounds.set(0, 0, 11250, 5250);
 
 
@@ -75,17 +76,19 @@ class LevelOneState extends FlxState {
 			_player.touchingFloor = true;
 		else 
 			_player.touchingFloor = false;
+		//FlxG.overlap(_player, _mSpikes, playerPop);
+		FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
 		FlxG.overlap(_player, _mWalls, grounded);*/
 		//FlxG.overlap(_player, _mSpikes, playerPop);
-		FlxG.overlap(_player,_key, collectKey);
+		
 	}
 
 	function placeEntities(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		if (entityName == "player") {
+		if (entityName == "Player") {
 			_player.x = x;
 			_player.y = y;
 		}

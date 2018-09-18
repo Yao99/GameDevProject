@@ -11,10 +11,12 @@
  class Player extends FlxSprite {
 	 
 	//movement
- 	public var speed_limit:Float = 1000;	
+ 	public var xlimit:Float = 250;
+ 	public var ylimit:Float = 750;	
  	public var gravity:Float = 500;
     public var touchingFloor:Bool = true;
 	public var jumping:Bool = false;
+	public var inflated:Bool = false;
 	
 	//species
 	var species:Int;
@@ -27,7 +29,7 @@
 		 //offset.y = 5;
 		 //updateHitbox();
 
-		 maxVelocity.set(250, 750);
+		 maxVelocity.set(xlimit, ylimit);
 		 acceleration.y = gravity;
 		 drag.x = maxVelocity.x * 4;
 
@@ -44,22 +46,27 @@
  		_jump = FlxG.keys.justPressed.SPACE;
 
  		if (FlxG.keys.justPressed.ONE){
-			if (species != 0){
+			if (species != 0) {
 				species = 0;
 				speciesSetup();
 			}
 		}
 		if (FlxG.keys.justPressed.TWO){
-			if (species != 1){
+			if (species != 1) {
 				species = 1;
 				speciesSetup();
 			}
 		}
 		if (FlxG.keys.justPressed.THREE){
-			if (species != 2){
+			if (species != 2) {
 				species = 2;
 				speciesSetup();
 			}
+		}
+
+		if (FlxG.keys.justPressed.DOWN) {
+			//inflate
+			inflated = true;
 		}
 
  		if (_left || _right || _jump) {
@@ -68,13 +75,18 @@
  			}
 
  			if (_left && !_right) {
- 				velocity.x = FlxMath.lerp(velocity.x, -speed_limit, .5);
+ 				velocity.x = FlxMath.lerp(velocity.x, -maxVelocity.x, .5);
  				facing = FlxObject.LEFT;
  				animation.play("walk");
  			} else if (_right && !_left) {
- 				velocity.x = FlxMath.lerp(velocity.x, speed_limit, .5);
+ 				velocity.x = FlxMath.lerp(velocity.x, maxVelocity.x, .5);
+ 				if (inflated) {
+ 					velocity.x /= 2;
+ 					animation.play("slowWalk");
+ 				} else 
+ 					animation.play("walk");
  				facing = FlxObject.RIGHT;
- 				animation.play("walk");
+ 				
  			} else {
  				animation.play("idle");
  			}
@@ -87,38 +99,41 @@
  			y = 2475;
  		}
 		
-		velocity.y = FlxMath.lerp(velocity.y, speed_limit, .01);
+		velocity.y = FlxMath.lerp(velocity.y, maxVelocity.y, .01);
 		
     }
 
 	function speciesSetup():Void{
 		if(touchingFloor)
-		y -= 50;
-		 if (species == 0) {
+			y -= 50;
+		if (species == 0) {
          	loadGraphic("assets/images/Frog1.png", true, 81, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 1, 2], 4, true);
+         	animation.add("walk", [0, 1, 2], 2, true);
          	animation.add("idle", [0, 0, 0, 3], 1, false);
 			width = 81;
 			height = 85;
-         } else if (species == 1) {
+        } else if (species == 1) {
          	loadGraphic("assets/images/Elephant.png", true, 137, 125);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 2, 10], 3, true);
+         	animation.add("slowWalk", [0, 1, 2], 1, true);
          	animation.add("idle", [10, 10, 10, 0, 0], 1, false);
 			width = 137;
 			height = 125;
-         }else if (species == 2) {
+        } else if (species == 2) {
          	loadGraphic("assets/images/squirrelGlide.png", true, 87, 100);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 1, 2], 3, true);
+         	animation.add("slowWalk", [0, 1, 2], 1, true);
          	animation.add("idle", [0], 1, false);
 			width = 87;
 			height = 100;
-         }
+        }
 	}
 	
     override public function update(elapsed:Float):Void {
