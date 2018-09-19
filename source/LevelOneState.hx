@@ -9,7 +9,7 @@ import flixel.addons.tile.*;
 import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
 import flixel.text.FlxText;
-
+import flixel.ui.FlxButton;
 
 /*
  *	Level One will load the first map and use the frog character
@@ -47,6 +47,7 @@ class LevelOneState extends FlxState {
 		//_mWalls.follow();
 		//collision directions for walls, spikes, and fans
 		_mWalls.immovable = true;
+		_mSpikes.immovable = true;
 		add(_mWalls);
 		add(_mSpikes);
 
@@ -76,7 +77,6 @@ class LevelOneState extends FlxState {
 	override public function update(elapsed:Float):Void
 	{
 		FlxG.collide(_player, _mWalls);
-		//FlxG.collide(_player, _mSpikes);
 		//FlxG.overlap(_player, _mSpikes, playerPop);
 		if (_player.isTouching(FlxObject.FLOOR))
 			_player.touchingFloor = true;
@@ -92,6 +92,11 @@ class LevelOneState extends FlxState {
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
 		FlxG.overlap(_player, _mWalls, grounded);*/
+		trace(_mSpikes.overlaps(_player));
+		//trace(FlxG.collide(_player, _mSpikes));
+		if(_mSpikes.overlaps(_player)){
+		//	playerPop();
+		}
 		//FlxG.overlap(_player, _mSpikes, playerPop);
 		
 	}
@@ -111,14 +116,30 @@ class LevelOneState extends FlxState {
 		_key.kill();
 	}
 
-	function playerPop(object1:FlxObject, object2:FlxObject):Void {
+	function playerPop():Void {
 		//player runs into spikes and dies
 		_player.kill();
+		//pop anim
+		var _restartButton = new FlxButton(0, 0, "Restart", reload);
+		_restartButton.screenCenter();
+		add(_restartButton);
+		var _quitButton = new FlxButton(0, 0, "Quit", quit);
+		_quitButton.screenCenter();
+		_quitButton.y += 25;
+		add(_quitButton);
 		//display gameover message and return to menuState
 	}
 
 	function grounded(object1:FlxObject, object2:FlxObject):Void {
 		_player.touchingFloor = true;
 		FlxObject.separate(object1, object2);
+	}
+	
+	function reload(){
+		FlxG.switchState(new LevelOneState());
+	}
+	
+	function quit(){
+		FlxG.switchState(new MenuState());
 	}
 }
