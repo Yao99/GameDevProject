@@ -32,12 +32,15 @@ class LevelOneState extends FlxState {
 		_mFan = new FlxTilemap();
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+		/*for (i in 0...5) 
+			_mWalls.setTileProperties(i, FlxObject.ANY);*/
+		_mWalls.setTileProperties(1, FlxObject.ANY);
 		for (i in 10...15) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);
 		_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		_mSpikes.setTileProperties(10, FlxObject.ANY);
-		_mSpikes.setTileProperties(20, FlxObject.ANY);
+		_mSpikes.setTileProperties(9, FlxObject.ANY);
+		_mSpikes.setTileProperties(17, FlxObject.ANY);
 		/*_mFan.loadMapFromArray(cast(_map.getLayer("Fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tileset1__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		*/
@@ -72,11 +75,18 @@ class LevelOneState extends FlxState {
 	override public function update(elapsed:Float):Void
 	{
 		FlxG.collide(_player, _mWalls);
-		if ((_player.isTouching(FlxObject.FLOOR)))
+		//FlxG.collide(_player, _mSpikes);
+		//FlxG.overlap(_player, _mSpikes, playerPop);
+		if (_player.isTouching(FlxObject.FLOOR))
 			_player.touchingFloor = true;
 		else 
 			_player.touchingFloor = false;
-		//FlxG.overlap(_player, _mSpikes, playerPop);
+
+		if (_player.isTouching(FlxObject.LEFT) || _player.isTouching(FlxObject.RIGHT))
+			_player.touchingWall = true;
+		else 
+			_player.touchingWall = false;
+		
 		FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;

@@ -15,11 +15,21 @@
  	public var ylimit:Float = 750;	
  	public var gravity:Float = 500;
     public var touchingFloor:Bool = true;
+    public var touchingWall:Bool = false;
 	public var jumping:Bool = false;
 	public var inflated:Bool = false;
+	//public var frog:Bool = true;
+	public var elephant:Bool = true;	//start as false
+	public var squirrel:Bool = true;	//"   "
+	public var snake:Bool = true;		//"   "
+	public var specFrog:Bool = false;
+	public var specElephant:Bool = false;
+	public var specSquirrel:Bool = false;
+	public var specSnake:Bool = false;
 	
 	//species
 	var species:Int;
+	var oldSpecies:Int;
 
     public function new(?X:Float=0, ?Y:Float=0, s:Int) {
          super(X, Y);
@@ -30,7 +40,6 @@
 		 //updateHitbox();
 
 		 maxVelocity.set(xlimit, ylimit);
-		 acceleration.y = gravity;
 		 drag.x = maxVelocity.x * 4;
 
      }
@@ -52,38 +61,90 @@
 			}
 		}
 		if (FlxG.keys.justPressed.TWO){
-			if (species != 1) {
+			if (species != 1 && elephant) {
 				species = 1;
 				speciesSetup();
 			}
 		}
 		if (FlxG.keys.justPressed.THREE){
-			if (species != 2) {
+			if (species != 2 && squirrel) {
 				species = 2;
+				speciesSetup();
+			}
+		}
+		if (FlxG.keys.justPressed.FOUR){
+			if (species != 3 && snake) {
+				species = 3;
 				speciesSetup();
 			}
 		}
 
 		if (FlxG.keys.justPressed.DOWN) {
 			//inflate
+
 			inflated = true;
 		}
 
+		if (FlxG.keys.justPressed.UP && inflated) {
+			inflated = false;
+			specSnake = specElephant = specSquirrel = specFrog = false;
+			if (species == 3) {
+				/*if (touchingFLoor) {
+					//leap
+					velocity.y = -maxVelocity.y;
+				} else 
+					inflated = true;
+*/
+				specSnake = true;
+			} else if (species == 1) {
+				specElephant = true;
+			} else if (species == 2) {
+				specSquirrel = true;
+			} else 
+				specFrog = true;
+		}
+
+		acceleration.x = 0;
+		acceleration.y = gravity;
+
  		if (_left || _right || _jump) {
- 			if (_jump && touchingFloor) {
- 				velocity.y = -750;
+ 			if (_jump) {
+ 				if (touchingFloor) {
+ 					velocity.y = -maxVelocity.y;
+ 					if (inflated)
+ 						velocity.y /= 2;	//jump nerfed
+ 					else if (specFrog) {	//can leap
+ 						maxVelocity.y = ylimit * 2;
+ 						velocity.y = -maxVelocity.y;
+ 					} else if (!specFrog)
+ 						maxVelocity.y = ylimit;
+ 				} else if (specElephant)	//can multi-jump
+ 					velocity.y = -maxVelocity.y;
+ 				else if (specSnake && touchingWall) {	//can wall jump
+ 					velocity.y = -maxVelocity.y; 
+ 				}
  			}
 
  			if (_left && !_right) {
  				velocity.x = FlxMath.lerp(velocity.x, -maxVelocity.x, .5);
+ 				if (inflated) {
+ 					velocity.x /= 2;
+ 					animation.play("slowWalk");
+ 				} else if (!touchingFloor && specSquirrel) {
+ 					acceleration.y = gravity / 4;
+ 					animation.play("glide");
+ 				} else
+ 					animation.play("walk");
  				facing = FlxObject.LEFT;
- 				animation.play("walk");
  			} else if (_right && !_left) {
  				velocity.x = FlxMath.lerp(velocity.x, maxVelocity.x, .5);
  				if (inflated) {
  					velocity.x /= 2;
  					animation.play("slowWalk");
- 				} else 
+ 				} else if (!touchingFloor && specSquirrel) {
+ 					acceleration.y = gravity / 4;
+ 					animation.play("glide");
+ 				} else
  					animation.play("walk");
  				facing = FlxObject.RIGHT;
  				
@@ -96,15 +157,18 @@
  		//reset !!!!!!!!!!!!!!!!REMOVE LATER!!!!!!!!!!!!!!!!!!	
  		if (FlxG.keys.pressed.BACKSPACE) {
  			x = 0;
- 			y = 2475;
+ 			y = 2400;
+ 			inflated = false;
+			specSnake = specElephant = specSquirrel = specFrog = false;
  		}
 		
 		velocity.y = FlxMath.lerp(velocity.y, maxVelocity.y, .01);
 		
     }
 
-	function speciesSetup():Void{
-		if(touchingFloor)
+	function speciesSetup():Void {
+		specSnake = specElephant = specSquirrel = specFrog = false;
+		if (touchingFloor)
 			y -= 50;
 		if (species == 0) {
          	loadGraphic("assets/images/Frog1.png", true, 81, 85);
@@ -116,6 +180,10 @@
 			width = 81;
 			height = 85;
         } else if (species == 1) {
+        	/*if (!elephant) {
+        		species = oldSpecies;
+        		return;
+        	}*/
          	loadGraphic("assets/images/Elephant.png", true, 137, 125);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
@@ -131,8 +199,18 @@
          	animation.add("walk", [0, 1, 2], 3, true);
          	animation.add("slowWalk", [0, 1, 2], 1, true);
          	animation.add("idle", [0], 1, false);
+         	animation.add("glide", [5, 5, 6, 6], 1, true);
 			width = 87;
 			height = 100;
+        } else if (species == 3) {
+        	loadGraphic("assets/images/CobraSlithering.png", true, 140, 150);
+         	setFacingFlip(FlxObject.LEFT, true, false);
+         	setFacingFlip(FlxObject.RIGHT, false, false);
+         	animation.add("walk", [0, 1, 2], 3, true);
+         	animation.add("slowWalk", [0, 1, 2], 1, true);
+         	animation.add("idle", [0], 1, false);
+			width = 140;
+			height = 150;
         }
 	}
 	
