@@ -46,6 +46,7 @@ class LevelOneState extends FlxState {
 		*/
 		//_mWalls.follow();
 		//collision directions for walls, spikes, and fans
+		_mWalls.immovable = true;
 		add(_mWalls);
 		add(_mSpikes);
 
