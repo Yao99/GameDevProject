@@ -7,38 +7,44 @@
  import flixel.system.FlxAssets.FlxGraphicAsset;
  import flixel.util.FlxColor;
  import flixel.math.FlxMath;
+ import flixel.util.FlxTimer;
 
  class Player extends FlxSprite {
 	 
-	//movement
- 	public var xlimit:Float = 250;
- 	public var ylimit:Float = 750;	
- 	public var gravity:Float = 500;
+ 	public var gravity:Float = 500;	//set to negative for fans?
     public var touchingFloor:Bool = true;
     public var touchingWall:Bool = false;
-	public var jumping:Bool = false;
+    public var inCloud:Bool = true;
 	public var inflated:Bool = false;
-	//public var frog:Bool = true;
 	public var elephant:Bool = true;	//start as false
 	public var squirrel:Bool = true;	//"   "
 	public var snake:Bool = true;		//"   "
-	public var specFrog:Bool = false;
-	public var specElephant:Bool = false;
-	public var specSquirrel:Bool = false;
-	public var specSnake:Bool = false;
+
+	private var xlimit:Float = 250;
+ 	private var ylimit:Float = 750;	
+ 	private var species:Int = 0;
+	private var specFrog:Bool = false;
+	private var specElephant:Bool = false;
+	private var specSquirrel:Bool = false;
+	private var specSnake:Bool = false;
+	private var specTimer:FlxTimer;
+	private var expandTimer:FlxTimer;
+	private var expandTime:Float = 0;
+
+
 	
 	//species
-	var species:Int;
-	var oldSpecies:Int;
+	//var oldSpecies:Int;
 
-    public function new(?X:Float=0, ?Y:Float=0, s:Int) {
+    public function new(?X:Float=0, ?Y:Float=0, ?s:Int=0) {
          super(X, Y);
 		 species = s;
 		 speciesSetup();
 
 		 //offset.y = 5;
 		 //updateHitbox();
-
+		 specTimer = new FlxTimer();
+		 expandTimer = new FlxTimer();
 		 maxVelocity.set(xlimit, ylimit);
 		 drag.x = maxVelocity.x * 4;
 
@@ -79,22 +85,24 @@
 			}
 		}
 
-		if (FlxG.keys.justPressed.DOWN) {
+		if (FlxG.keys.justPressed.DOWN && inCloud) {
 			//inflate
-
+			//while inCloud, track time
+			expandTimer.start(3, 0);
 			inflated = true;
+		}
+
+		if (FlxG.keys.justReleased.DOWN) {
+			expandTime = expandTimer.elapsedTime;
+			if (expandTime > 3)
+				expandTime = 3;
+			expandTimer.cancel();
 		}
 
 		if (FlxG.keys.justPressed.UP && inflated) {
 			inflated = false;
 			specSnake = specElephant = specSquirrel = specFrog = false;
 			if (species == 3) {
-				/*if (touchingFLoor) {
-					//leap
-					velocity.y = -maxVelocity.y;
-				} else 
-					inflated = true;
-*/
 				specSnake = true;
 			} else if (species == 1) {
 				specElephant = true;
@@ -102,6 +110,7 @@
 				specSquirrel = true;
 			} else 
 				specFrog = true;
+			specTimer.start(expandTime, function(Timer:FlxTimer) {specSnake = specElephant = specSquirrel = specFrog = false;}, 1);
 		}
 
 		acceleration.x = 0;
