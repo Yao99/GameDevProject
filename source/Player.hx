@@ -86,6 +86,7 @@
 		}
 
 		if (FlxG.keys.justPressed.DOWN && inCloud) {
+			animation.play("inhale");
 			//inflate
 			//while inCloud, track time
 			expandTimer.start(3, 0);
@@ -97,9 +98,12 @@
 			if (expandTime > 3)
 				expandTime = 3;
 			expandTimer.cancel();
+			animation.play("inhaled");
 		}
 
+
 		if (FlxG.keys.justPressed.UP && inflated) {
+			animation.play("exhale");
 			inflated = false;
 			specSnake = specElephant = specSquirrel = specFrog = false;
 			if (species == 3) {
@@ -111,15 +115,23 @@
 			} else 
 				specFrog = true;
 			specTimer.start(expandTime, function(Timer:FlxTimer) {specSnake = specElephant = specSquirrel = specFrog = false;}, 1);
+			
 		}
 
 		acceleration.x = 0;
 		acceleration.y = gravity;
-
+		
+		/*if (touchingFloor && !inflated && velocity.x == 0){
+			animation.play("idle");
+		}else if (touchingFloor && inflated && !FlxG.keys.anyPressed([DOWN])){
+			animation.play("inflated");
+		}*/
+		//controls
  		if (_left || _right || _jump) {
  			if (_jump) {
  				if (touchingFloor) {
  					velocity.y = -maxVelocity.y;
+					animation.play("jump");
  					if (inflated)
  						velocity.y /= 2;	//jump nerfed
  					else if (specFrog) {	//can leap
@@ -136,32 +148,34 @@
 
  			if (_left && !_right) {
  				velocity.x = FlxMath.lerp(velocity.x, -maxVelocity.x, .5);
- 				if (inflated) {
- 					velocity.x /= 2;
- 					animation.play("slowWalk");
- 				} else if (!touchingFloor && specSquirrel) {
- 					acceleration.y = gravity / 4;
- 					animation.play("glide");
- 				} else
- 					animation.play("walk");
  				facing = FlxObject.LEFT;
  			} else if (_right && !_left) {
  				velocity.x = FlxMath.lerp(velocity.x, maxVelocity.x, .5);
- 				if (inflated) {
+ 				facing = FlxObject.RIGHT;	
+ 			}
+			
+			if (_left || _right && !(_left && _right)){
+				if (inflated) {
  					velocity.x /= 2;
+					if(animation.finished)
  					animation.play("slowWalk");
  				} else if (!touchingFloor && specSquirrel) {
  					acceleration.y = gravity / 4;
  					animation.play("glide");
  				} else
- 					animation.play("walk");
- 				facing = FlxObject.RIGHT;
- 				
- 			} else {
- 				animation.play("idle");
- 			}
- 		} else 
- 			animation.play("idle");
+ 					if(animation.finished)animation.play("walk");
+			}
+ 		}else{
+			if (touchingFloor && !inflated && velocity.x == 0){
+				if (animation.name == "exhale" && animation.finished){
+					animation.play("idle");
+				}else if (animation.name != "exhale"){
+					animation.play("idle");
+				}
+			}
+			
+	
+		}
 
  		//reset !!!!!!!!!!!!!!!!REMOVE LATER!!!!!!!!!!!!!!!!!!	
  		if (FlxG.keys.pressed.BACKSPACE) {
@@ -180,46 +194,58 @@
 		if (touchingFloor)
 			y -= 50;
 		if (species == 0) {
-         	loadGraphic("assets/images/Frog1.png", true, 81, 85);
+         	loadGraphic("assets/images/FrogFinalAnimation.png", true, 85, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 1, 2], 4, true);
-         	animation.add("walk", [0, 1, 2], 2, true);
-         	animation.add("idle", [0, 0, 0, 3], 1, false);
-			width = 81;
+         	animation.add("idle", [0, 0, 0, 2], 1, true);
+			animation.add("inhale", [3, 4, 5], 4, false);
+			animation.add("exhale", [4, 3], 4, false);
+			animation.add("inhaled", [5], 1, true);
+			animation.add("jump", [7, 8, 9,0], 5, false);
+			width = 85;
 			height = 85;
         } else if (species == 1) {
         	/*if (!elephant) {
         		species = oldSpecies;
         		return;
         	}*/
-         	loadGraphic("assets/images/Elephant.png", true, 137, 125);
+         	loadGraphic("assets/images/ElephantFinalAnimations.png", true, 85, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
-         	animation.add("walk", [0, 2, 10], 3, true);
-         	animation.add("slowWalk", [0, 1, 2], 1, true);
-         	animation.add("idle", [10, 10, 10, 0, 0], 1, false);
-			width = 137;
-			height = 125;
+			
+			animation.add("walk", [0, 1], 4, true);
+         	animation.add("idle", [0], 1, true);
+			animation.add("inhale", [4, 5, 6], 4, false);
+			animation.add("exhale", [5, 4], 4, false);
+			animation.add("inhaled", [6], 1, true);
+			animation.add("jump", [2, 3, 2,3], 5, false);
+			width = 85;
+			height = 85;
         } else if (species == 2) {
-         	loadGraphic("assets/images/squirrelGlide.png", true, 87, 100);
+         	loadGraphic("assets/images/squirrelAnimations.png", true, 76, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
-         	setFacingFlip(FlxObject.RIGHT, false, false);
-         	animation.add("walk", [0, 1, 2], 3, true);
-         	animation.add("slowWalk", [0, 1, 2], 1, true);
-         	animation.add("idle", [0], 1, false);
-         	animation.add("glide", [5, 5, 6, 6], 1, true);
-			width = 87;
-			height = 100;
+         	animation.add("glide", [8, 9, 8, 9], 1, true);
+			animation.add("walk", [0, 6], 4, true);
+         	animation.add("idle", [0], 1, true);
+			animation.add("inhale", [2, 3, 4], 4, false);
+			animation.add("exhale", [3, 2], 4, false);
+			animation.add("inhaled", [4], 1, true);
+			animation.add("jump", [6, 7, 7], 5, false);
+			width = 76;
+			height = 85;
         } else if (species == 3) {
-        	loadGraphic("assets/images/CobraSlithering.png", true, 140, 150);
+        	loadGraphic("assets/images/CobraAnimations.png", true, 78, 99);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	setFacingFlip(FlxObject.RIGHT, false, false);
-         	animation.add("walk", [0, 1, 2], 3, true);
-         	animation.add("slowWalk", [0, 1, 2], 1, true);
-         	animation.add("idle", [0], 1, false);
-			width = 140;
-			height = 150;
+			animation.add("walk", [0, 1,2,3], 4, true);
+         	animation.add("idle", [0], 1, true);
+			animation.add("inhale", [6, 7, 8], 4, false);
+			animation.add("exhale", [7, 6], 4, false);
+			animation.add("inhaled", [8], 1, true);
+			animation.add("jump", [3, 5 ,5], 5, false);
+			width = 78;
+			height = 99;
         }
 	}
 	
