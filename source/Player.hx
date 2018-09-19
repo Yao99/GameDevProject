@@ -185,7 +185,7 @@
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 1, 2], 4, true);
          	animation.add("walk", [0, 1, 2], 2, true);
-         	animation.add("idle", [0, 0, 0, 3], 1, false);
+         	animation.add("idle", [0, 0, 0, 3], 1, true);
 			width = 81;
 			height = 85;
         } else if (species == 1) {
@@ -198,7 +198,7 @@
          	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("walk", [0, 2, 10], 3, true);
          	animation.add("slowWalk", [0, 1, 2], 1, true);
-         	animation.add("idle", [10, 10, 10, 0, 0], 1, false);
+         	animation.add("idle", [10, 10, 10, 0, 0], 1, true);
 			width = 137;
 			height = 125;
         } else if (species == 2) {
