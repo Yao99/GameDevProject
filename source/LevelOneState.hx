@@ -27,6 +27,8 @@ class LevelOneState extends FlxState {
 	var _mExpand:FlxTilemap;
 	var _mCage:FlxTilemap;
 	var _mFan:FlxTilemap;
+	var _fSpikes:FloatySpikes;
+	var _fSpikes1:FloatySpikes;
 	var deathTimer:FlxTimer;
 	var dying:Bool = false;
 	var _restartButton:FlxButton;
@@ -91,6 +93,12 @@ class LevelOneState extends FlxState {
 		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();
 		add(_background);
+		
+		_fSpikes = new FloatySpikes(29*75, 30*75, 0, 3, 29*75,29*75,34*75,26*75);
+		add(_fSpikes);
+		
+		_fSpikes1 = new FloatySpikes(19*75, 38*75, 3, 0, 23*75,15*75,38*75,38*75,true);
+		add(_fSpikes1);
 		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
@@ -161,6 +169,11 @@ class LevelOneState extends FlxState {
 		if (_player.overlaps(_key))
 			collectKey();
 
+		if (_player.overlaps(_fSpikes))
+			playerPop();
+			
+		if (_player.overlaps(_fSpikes1))
+			playerPop();
 		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
