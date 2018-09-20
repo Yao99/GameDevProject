@@ -350,7 +350,7 @@
 				ribbit.play();
 		}, 0);
 		jumpSnd= FlxG.sound.load(AssetPaths.jumpShort__wav);
-		popSnd = FlxG.sound.load(AssetPaths.pop__wav);
+		popSnd = FlxG.sound.load(AssetPaths.pop__wav, 20);
 		gameOver = FlxG.sound.load(AssetPaths.game_over__wav);
 
 	}
