@@ -3,10 +3,12 @@ package;
 import flixel.FlxState;
 import flixel.ui.FlxButton;
 import flixel.FlxG;
+import flixel.FlxSprite;
 
 class MenuState extends FlxState
 {
 	var _playButton: FlxButton;
+	var _background: FlxSprite;
 	
 	override public function create():Void
 	{
@@ -15,7 +17,13 @@ class MenuState extends FlxState
      FlxG.sound.playMusic(AssetPaths.mainMenu__wav, 1, true);
  }
 		super.create();
-		_playButton = new FlxButton(0, 0, "P L A Y", clickPlay);
+		_background = new FlxSprite();
+		/*make background image here
+		_background.loadGraphic();
+		add(_background);*/
+		
+		_playButton = new FlxButton(0, 0, clickPlay);
+		_playButton.loadGraphic("assets/images/play.png", true, 300, 150);
 		_playButton.screenCenter();
 		add(_playButton);
 	}
