@@ -343,7 +343,7 @@
 	}
 
 	public function soundSetup():Void {
-		ribbit = FlxG.sound.load(AssetPaths.Ribbit__wav);
+		ribbit = FlxG.sound.load(AssetPaths.ribbit__wav);
 		ribbitTimer = new FlxTimer();
 		ribbitTimer.start(7, function(Timer:FlxTimer) {
 			if (species == 0 && alive)
