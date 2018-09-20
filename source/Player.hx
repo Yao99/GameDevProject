@@ -8,6 +8,7 @@
  import flixel.util.FlxColor;
  import flixel.math.FlxMath;
  import flixel.util.FlxTimer;
+ import flixel.system.FlxSound;
 
  class Player extends FlxSprite {
 	 
@@ -21,7 +22,7 @@
 	public var snake:Bool = true;		//"   "
 	public var species:Int = 0;
 	public var dead:Bool = false;
-
+	public var gameOver:FlxSound;
 
 	private var xlimit:Float = 250;
  	private var ylimit:Float = 750;	
@@ -33,6 +34,10 @@
 	private var expandTimer:FlxTimer;
 	private var expandTime:Float = 0;
 	private var deathTimer:FlxTimer;
+	private var ribbitTimer:FlxTimer;
+	private var ribbit:FlxSound;
+	private var jumpSnd:FlxSound;
+	private var popSnd:FlxSound;
 	
 
 	
@@ -43,6 +48,7 @@
          super(X, Y);
 		 species = s;
 		 speciesSetup();
+		 soundSetup();
 
 		 //offset.y = 5;
 		 //updateHitbox();
@@ -136,6 +142,7 @@
  				if (touchingFloor) {
  					velocity.y = -maxVelocity.y;
 					animation.play("jump");
+					jumpSnd.play();
  					if (inflated)
  						velocity.y /= 2;	//jump nerfed
  					else if (specFrog) {	//can leap
@@ -289,9 +296,23 @@
 		}
 		graphicLoaded();
 		animation.play("death");
+		popSnd.play();
 
 				//while (!dead) {}
 		//kill();
+	}
+
+	public function soundSetup():Void {
+		ribbit = FlxG.sound.load(AssetPaths.ribbit__wav);
+		ribbitTimer = new FlxTimer();
+		ribbitTimer.start(2, function(Timer:FlxTimer) {
+			if (species == 0 && alive)
+				ribbit.play();
+		}, 0);
+		jumpSnd= FlxG.sound.load(AssetPaths.jumpShort__wav);
+		popSnd = FlxG.sound.load(AssetPaths.pop__wav);
+		gameOver = FlxG.sound.load(AssetPaths.game_over__wav);
+
 	}
 
 	

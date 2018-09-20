@@ -159,6 +159,7 @@ class LevelOneState extends FlxState {
 
 	public function deathCheck():Void {
 		deathTimer.start(0.875, function(Timer:FlxTimer) {
+			_player.gameOver.play();
 			_player.kill();
 			var _restartButton = new FlxButton(0, 0, "Restart", reload);
 			_restartButton.screenCenter();
