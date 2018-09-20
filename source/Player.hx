@@ -9,6 +9,7 @@
  import flixel.math.FlxMath;
  import flixel.util.FlxTimer;
  import flixel.system.FlxSound;
+ import flixel.ui.FlxButton;
 
  class Player extends FlxSprite {
 	 
@@ -40,7 +41,7 @@
 	private var jumpSnd:FlxSound;
 	private var popSnd:FlxSound;
 	
-
+	var icons:Array<FlxButton> = new Array<FlxButton>();
 	
 	//species
 	//var oldSpecies:Int;
@@ -58,7 +59,43 @@
 		 deathTimer = new FlxTimer();
 		 maxVelocity.set(xlimit, ylimit);
 		 drag.x = maxVelocity.x * 4;
+		 
+		 if (s >= 1){
+			 squirrel = true;
+		 }
+		 
+		 if (s >= 2){
+			 elephant = true;
+		 }
 
+		 if (s >= 3){
+			 snake = true;
+		 }
+		 
+		 //create icons
+		 
+		 for (i in 0...4){
+		  icons.push(new FlxButton(i * 85, 0, "",changeSpecies.bind(i)));
+		  icons[i].loadGraphic("assets/images/icon_"+i+".png", true, 85, 85);
+		  icons[i].animation.add("unlocked", [0], 1, true);
+		  icons[i].animation.add("equipped", [1], 1, true);
+		  icons[i].animation.add("locked", [2], 1, true);
+		  if (species == i){
+			  icons[i].animation.play("equipped");
+		  }else{
+			icons[i].animation.play("unlocked");
+		  }
+		  if (i == 0){
+			  		  FlxG.state.add(icons[i]);
+		  }else if (i == 1 && squirrel){
+			  		  FlxG.state.add(icons[i]);
+		  }else if (i == 2 && elephant){
+		  		  FlxG.state.add(icons[i]);
+		  }else if (i == 3 && snake){
+		  		  FlxG.state.add(icons[i]);
+		  }
+
+		 }
      }
 	 
     function movement():Void {
@@ -306,7 +343,7 @@
 	}
 
 	public function soundSetup():Void {
-		ribbit = FlxG.sound.load(AssetPaths.ribbit__wav);
+		ribbit = FlxG.sound.load(AssetPaths.Ribbit__wav);
 		ribbitTimer = new FlxTimer();
 		ribbitTimer.start(7, function(Timer:FlxTimer) {
 			if (species == 0 && alive)
@@ -323,4 +360,9 @@
     	movement();
     	super.update(elapsed);
     }
+	
+	public function changeSpecies(i:Int):Void{
+		species = i;
+		speciesSetup();
+	}
 }
