@@ -35,14 +35,14 @@ class LevelOneState extends FlxState {
 		_mFan = new FlxTilemap();
 		deathTimer = new FlxTimer();
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.tilemapfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		/*for (i in 0...5) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);*/
 		//_mWalls.setTileProperties(1, FlxObject.ANY);
 		for (i in 10...15) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);
 		_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.tilemapfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		/*_mSpikes.setTileProperties(9, FlxObject.ANY);
 		_mSpikes.setTileProperties(17, FlxObject.ANY);
 */		/*_mFan.loadMapFromArray(cast(_map.getLayer("Fans"), TiledTileLayer).tileArray, _map.width, _map.height, 

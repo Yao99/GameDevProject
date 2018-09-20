@@ -161,23 +161,34 @@
 			if (_left || _right && !(_left && _right)){
 				if (inflated) {
  					velocity.x /= 2;
-					if(animation.finished)
- 					animation.play("slowWalk");
+					if (animation.name == "inhale" && animation.finished)
+ 						animation.play("slowWalk");
+ 					else 
+ 						animation.play("slowWalk");
  				} else if (!touchingFloor && specSquirrel) {
  					acceleration.y = gravity / 4;
  					animation.play("glide");
- 				} else
- 					if(animation.finished)animation.play("walk");
+ 				} else if (animation.name == "exhale" && animation.finished)
+ 						animation.play("walk");
+ 				else 
+ 					animation.play("walk");
 			}
- 		}else{
-			if (touchingFloor && !inflated && velocity.x == 0){
-				if (animation.name == "exhale" && animation.finished){
-					animation.play("idle");
-				}else if (animation.name != "exhale"){
-					animation.play("idle");
+ 		} else {
+			if (touchingFloor && velocity.x == 0) {
+				if (!inflated) {
+					if (animation.name == "exhale" && animation.finished){
+						animation.play("idle");
+					} else if (animation.name != "exhale"){
+						animation.play("idle");
+					}
+				} else {
+					if (animation.name == "inhale" && animation.finished) {
+						animation.play("inhaled");
+					} else if (animation.name != "inhale"){
+						animation.play("inhaled");
+					}
 				}
 			}
-			
 	
 		}
 
