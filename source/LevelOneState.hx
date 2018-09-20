@@ -20,10 +20,12 @@ class LevelOneState extends FlxState {
 	
 	var _player:Player;
 	var _key:FlxSprite; // should key be a custom class?
-	var has_key:Bool = false;
+	//var has_key:Bool = false;
 	var _map:TiledMap;
 	var _mWalls:FlxTilemap;
 	var _mSpikes:FlxTilemap;
+	var _mExpand:FlxTilemap;
+	var _mCage:FlxTilemap;
 	var _mFan:FlxTilemap;
 	var deathTimer:FlxTimer;
 	var dying:Bool = false;
@@ -33,25 +35,46 @@ class LevelOneState extends FlxState {
 		_map = new TiledMap(AssetPaths.firstmapdraft__tmx);
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
+		_mExpand = new FlxTilemap();
+		_mCage = new FlxTilemap();
 		_mFan = new FlxTilemap();
 		deathTimer = new FlxTimer();
+
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		for (i in 0...2) 
 			_mWalls.setTileProperties(i, FlxObject.NONE);
 		//_mWalls.setTileProperties(1, FlxObject.ANY);
-		for (i in 2...13) 
-			_mWalls.setTileProperties(i, FlxObject.ANY);
 		for (i in 17...32)
 			_mWalls.setTileProperties(i, FlxObject.ANY);
+		/*for (i in 32...36)
+			_mWalls.setTileProperties(i, FlxObject.NONE);*/
+
 		_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		for (i in 13...17)
 			_mSpikes.setTileProperties(i, FlxObject.ANY);
-		for (i in 0...13)
+		/*for (i in 0...13)
 			_mSpikes.setTileProperties(i, FlxObject.NONE);
-		for (i in 17... 32)
+		for (i in 17... 36)
 			_mSpikes.setTileProperties(i, FlxObject.NONE);
+*/
+		_mExpand.loadMapFromArray(cast(_map.getLayer("Expand"), TiledTileLayer).tileArray, _map.width, _map.height, 
+			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+		/*for (i in 0...2)
+			_mExpand.setTileProperties(i, FlxObject.NONE);*/
+		for (i in 2...13) 
+			_mExpand.setTileProperties(i, FlxObject.ANY);
+		/*for (i in 13...36)
+			_mExpand.setTileProperties(i, FlxObject.NONE);
+*/
+		_mCage.loadMapFromArray(cast(_map.getLayer("Cage"), TiledTileLayer).tileArray, _map.width, _map.height, 
+			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+	/*	for (i in 0...33)
+			_mCage.setTileProperties(i, FlxObject.NONE);*/
+		for (i in 33...36) 
+			_mCage.setTileProperties(i, FlxObject.ANY);
+		
 		/*_mSpikes.setTileProperties(9, FlxObject.ANY);
 		_mSpikes.setTileProperties(17, FlxObject.ANY);
 */		/*_mFan.loadMapFromArray(cast(_map.getLayer("Fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
@@ -59,10 +82,22 @@ class LevelOneState extends FlxState {
 		*/
 		//_mWalls.follow();
 		//collision directions for walls, spikes, and fans
+		
+		//background art
+		var _background:FlxSprite = new FlxSprite();
+		_background.loadGraphic("assets/images/Background.png", true, 5250, 2700);
+		add(_background);
+		_background.x -= 188;
+		_background.y += 1125;
+		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
+		_mExpand.immovable = true;
+		_mCage.immovable = true;
 		add(_mWalls);
 		add(_mSpikes);
+		add(_mExpand);
+		add(_mCage);
 
 		//pass 0 for frog, 1 for elephant
 		_player = new Player(0, 2400, 0);
@@ -90,6 +125,18 @@ class LevelOneState extends FlxState {
 	override public function update(elapsed:Float):Void
 	{
 		FlxG.collide(_player, _mWalls);
+		trace(_mExpand.overlapsWithCallback(_player));
+		if (_mExpand.overlapsWithCallback(_player)) {
+			_player.inCloud = true;
+			FlxObject.separate(_player, _mExpand);
+		}
+		else 
+			_player.inCloud = false;
+
+		_mCage.overlapsWithCallback(_player, caged);
+		//FlxG.collide(_player, _mExpand);
+		//FlxG.collide(_player, _mCage);
+		//FlxG.collide(_player, _mExpand);
 		//FlxG.overlap(_player, _mSpikes, playerPop);
 		if (_player.isTouching(FlxObject.FLOOR))
 			_player.touchingFloor = true;
@@ -106,6 +153,8 @@ class LevelOneState extends FlxState {
 
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
+
+		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
@@ -131,8 +180,18 @@ class LevelOneState extends FlxState {
 
 	function collectKey(object1:FlxObject, object2:FlxObject):Void {
 		//some collect key sound
-		has_key = true;
+		_player.has_key = true;
 		_key.kill();
+	}
+
+	function caged(object1:FlxObject, object2:FlxObject):Bool {
+		if (_player.has_key) {
+			//win
+			_player.squirrel = true;
+			return true;
+		}
+		FlxObject.separate(object1, object2);
+		return false;
 	}
 
 	function spikeHit(object1:FlxObject, object2:FlxObject):Bool {
