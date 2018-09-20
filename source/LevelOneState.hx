@@ -8,6 +8,7 @@ import flixel.addons.editors.tiled.*;
 import flixel.addons.tile.*;
 import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
@@ -36,13 +37,21 @@ class LevelOneState extends FlxState {
 		deathTimer = new FlxTimer();
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		/*for (i in 0...5) 
-			_mWalls.setTileProperties(i, FlxObject.ANY);*/
+		for (i in 0...2) 
+			_mWalls.setTileProperties(i, FlxObject.NONE);
 		//_mWalls.setTileProperties(1, FlxObject.ANY);
-		for (i in 10...15) 
+		for (i in 2...13) 
+			_mWalls.setTileProperties(i, FlxObject.ANY);
+		for (i in 17...32)
 			_mWalls.setTileProperties(i, FlxObject.ANY);
 		_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+		for (i in 13...17)
+			_mSpikes.setTileProperties(i, FlxObject.ANY);
+		for (i in 0...13)
+			_mSpikes.setTileProperties(i, FlxObject.NONE);
+		for (i in 17... 32)
+			_mSpikes.setTileProperties(i, FlxObject.NONE);
 		/*_mSpikes.setTileProperties(9, FlxObject.ANY);
 		_mSpikes.setTileProperties(17, FlxObject.ANY);
 */		/*_mFan.loadMapFromArray(cast(_map.getLayer("Fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
@@ -94,16 +103,20 @@ class LevelOneState extends FlxState {
 		
 		if (_player.y >= 3750)
 			playerPop();
-		FlxG.overlap(_player,_key, collectKey);
+
+		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
+		_mSpikes.overlapsWithCallback(_player, spikeHit);
+		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
 		FlxG.overlap(_player, _mWalls, grounded);*/
-		trace(_mSpikes.overlaps(_player));
+		
+		//FlxG.collide(_player, _mSpikes);
 		//trace(FlxG.collide(_player, _mSpikes));
 		/*if(_mSpikes.overlaps(_player)){
 		//	playerPop();
 		}*/
-		//FlxG.overlap(_player, _mSpikes, playerPop);
+		
 		
 	}
 
@@ -120,6 +133,16 @@ class LevelOneState extends FlxState {
 		//some collect key sound
 		has_key = true;
 		_key.kill();
+	}
+
+	function spikeHit(object1:FlxObject, object2:FlxObject):Bool {
+		/*var xCoord:Int = Std.int(object2.x / 75);
+		var yCoord:Int = Std.int(object2.y / 75);
+		var tileID:Int = _mSpikes.getTile(xCoord, yCoord);*/
+		//trace(tileID);
+		//if (tileID >= 13 && tileID <= 16)
+			playerPop();
+			return true;
 	}
 
 	function playerPop():Void {

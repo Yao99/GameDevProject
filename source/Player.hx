@@ -279,10 +279,10 @@
 			loadGraphic("assets/images/poomElephant.png", true, 25, 25);
 			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 8, false);
 			//animation.play("death"); }
-		/*} else if (species == 2) {
-			loadGraphic("assets/images/poomSquirrel.png", true, 50, 50);
-			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 2, false);
-			animation.play("death");*/
+		} else if (species == 2) {
+			loadGraphic("assets/images/poomSquirrel.png", true, 25, 25);
+			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 8, false);
+			animation.play("death");
 		} else {
 			loadGraphic("assets/images/poomCobra.png", true, 50, 50);
 			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 8, false);
