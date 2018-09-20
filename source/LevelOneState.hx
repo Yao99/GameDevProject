@@ -39,37 +39,41 @@ class LevelOneState extends FlxState {
 		_mCage = new FlxTilemap();
 		_mFan = new FlxTilemap();
 		deathTimer = new FlxTimer();
+
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		for (i in 0...16) 
+		for (i in 0...2) 
 			_mWalls.setTileProperties(i, FlxObject.NONE);
 		//_mWalls.setTileProperties(1, FlxObject.ANY);
 		for (i in 17...32)
 			_mWalls.setTileProperties(i, FlxObject.ANY);
-		for (i in 32...36)
-			_mWalls.setTileProperties(i, FlxObject.NONE);
+		/*for (i in 32...36)
+			_mWalls.setTileProperties(i, FlxObject.NONE);*/
+
 		_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		for (i in 13...17)
 			_mSpikes.setTileProperties(i, FlxObject.ANY);
-		for (i in 0...13)
+		/*for (i in 0...13)
 			_mSpikes.setTileProperties(i, FlxObject.NONE);
 		for (i in 17... 36)
 			_mSpikes.setTileProperties(i, FlxObject.NONE);
+*/
 		_mExpand.loadMapFromArray(cast(_map.getLayer("Expand"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		for (i in 0...2)
-			_mExpand.setTileProperties(i, FlxObject.NONE);
+		/*for (i in 0...2)
+			_mExpand.setTileProperties(i, FlxObject.NONE);*/
 		for (i in 2...13) 
 			_mExpand.setTileProperties(i, FlxObject.ANY);
-		for (i in 13...36)
+		/*for (i in 13...36)
 			_mExpand.setTileProperties(i, FlxObject.NONE);
+*/
 		_mCage.loadMapFromArray(cast(_map.getLayer("Cage"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		for (i in 0...33)
-			_mExpand.setTileProperties(i, FlxObject.NONE);
+	/*	for (i in 0...33)
+			_mCage.setTileProperties(i, FlxObject.NONE);*/
 		for (i in 33...36) 
-			_mExpand.setTileProperties(i, FlxObject.ANY);
+			_mCage.setTileProperties(i, FlxObject.ANY);
 		
 		/*_mSpikes.setTileProperties(9, FlxObject.ANY);
 		_mSpikes.setTileProperties(17, FlxObject.ANY);
@@ -81,10 +85,10 @@ class LevelOneState extends FlxState {
 		
 		//background art
 		var _background:FlxSprite = new FlxSprite();
-		_background.loadGraphic("assets/images/Background.png", true, 11250, 5250);
+		_background.loadGraphic("assets/images/Background.png", true, 5250, 2700);
 		add(_background);
-		_background.x -= 750;
-		_background.y += 500;
+		_background.x -= 188;
+		_background.y += 1125;
 		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
@@ -121,6 +125,18 @@ class LevelOneState extends FlxState {
 	override public function update(elapsed:Float):Void
 	{
 		FlxG.collide(_player, _mWalls);
+		trace(_mExpand.overlapsWithCallback(_player));
+		if (_mExpand.overlapsWithCallback(_player)) {
+			_player.inCloud = true;
+			FlxObject.separate(_player, _mExpand);
+		}
+		else 
+			_player.inCloud = false;
+
+		_mCage.overlapsWithCallback(_player, caged);
+		//FlxG.collide(_player, _mExpand);
+		//FlxG.collide(_player, _mCage);
+		//FlxG.collide(_player, _mExpand);
 		//FlxG.overlap(_player, _mSpikes, playerPop);
 		if (_player.isTouching(FlxObject.FLOOR))
 			_player.touchingFloor = true;
@@ -137,12 +153,8 @@ class LevelOneState extends FlxState {
 
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
-		if (_mExpand.overlaps(_player))
-			_player.inCloud = true;
-		else 
-			_player.inCloud = false;
 
-		_mCage.overlapsWithCallback(_player, caged);
+		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
