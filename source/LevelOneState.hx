@@ -10,6 +10,7 @@ import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.util.FlxTimer;
 
 /*
  *	Level One will load the first map and use the frog character
@@ -23,6 +24,8 @@ class LevelOneState extends FlxState {
 	var _mWalls:FlxTilemap;
 	var _mSpikes:FlxTilemap;
 	var _mFan:FlxTilemap;
+	var deathTimer:FlxTimer;
+	var dying:Bool = false;
 	
 	override public function create():Void {
 		//load in first map
@@ -30,15 +33,16 @@ class LevelOneState extends FlxState {
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
 		_mFan = new FlxTilemap();
+		deathTimer = new FlxTimer();
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.tilesetfinal__tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+			AssetPaths.tilemapfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		/*for (i in 0...5) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);*/
 		//_mWalls.setTileProperties(1, FlxObject.ANY);
 		for (i in 10...15) 
 			_mWalls.setTileProperties(i, FlxObject.ANY);
 		_mSpikes.loadMapFromArray(cast(_map.getLayer("Spikes"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.tilesetfinal__tsx, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+			AssetPaths.tilemapfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		/*_mSpikes.setTileProperties(9, FlxObject.ANY);
 		_mSpikes.setTileProperties(17, FlxObject.ANY);
 */		/*_mFan.loadMapFromArray(cast(_map.getLayer("Fans"), TiledTileLayer).tileArray, _map.width, _map.height, 
@@ -88,15 +92,17 @@ class LevelOneState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
+		if (_player.y >= 3750)
+			playerPop();
 		FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
 		FlxG.overlap(_player, _mWalls, grounded);*/
 		trace(_mSpikes.overlaps(_player));
 		//trace(FlxG.collide(_player, _mSpikes));
-		if(_mSpikes.overlaps(_player)){
+		/*if(_mSpikes.overlaps(_player)){
 		//	playerPop();
-		}
+		}*/
 		//FlxG.overlap(_player, _mSpikes, playerPop);
 		
 	}
@@ -118,16 +124,33 @@ class LevelOneState extends FlxState {
 
 	function playerPop():Void {
 		//player runs into spikes and dies
-		_player.kill();
-		//pop anim
-		var _restartButton = new FlxButton(0, 0, "Restart", reload);
-		_restartButton.screenCenter();
-		add(_restartButton);
-		var _quitButton = new FlxButton(0, 0, "Quit", quit);
-		_quitButton.screenCenter();
-		_quitButton.y += 25;
-		add(_quitButton);
+		if (!dying) {
+			dying = true;
+			_player.death();
+			deathCheck();
+		}
+		
 		//display gameover message and return to menuState
+	}
+
+
+	public function deathCheck():Void {
+		deathTimer.start(0.875, function(Timer:FlxTimer) {
+			_player.kill();
+			var _restartButton = new FlxButton(0, 0, "Restart", reload);
+			_restartButton.screenCenter();
+			add(_restartButton);
+			var _quitButton = new FlxButton(0, 0, "Quit", quit);
+			_quitButton.screenCenter();
+			_quitButton.y += 25;
+			add(_quitButton);
+		}, 1);
+		/*while (!dead)
+			dead = false;*/
+		/*while (deathTimer.elapsedTime < 3.5)
+			dead = false*/
+		//return dead;
+
 	}
 
 	function grounded(object1:FlxObject, object2:FlxObject):Void {

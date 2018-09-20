@@ -19,18 +19,21 @@
 	public var elephant:Bool = true;	//start as false
 	public var squirrel:Bool = true;	//"   "
 	public var snake:Bool = true;		//"   "
+	public var species:Int = 0;
+	public var dead:Bool = false;
+
 
 	private var xlimit:Float = 250;
  	private var ylimit:Float = 750;	
- 	private var species:Int = 0;
-	private var specFrog:Bool = false;
+ 	private var specFrog:Bool = false;
 	private var specElephant:Bool = false;
 	private var specSquirrel:Bool = false;
 	private var specSnake:Bool = false;
 	private var specTimer:FlxTimer;
 	private var expandTimer:FlxTimer;
 	private var expandTime:Float = 0;
-
+	private var deathTimer:FlxTimer;
+	
 
 	
 	//species
@@ -45,6 +48,7 @@
 		 //updateHitbox();
 		 specTimer = new FlxTimer();
 		 expandTimer = new FlxTimer();
+		 deathTimer = new FlxTimer();
 		 maxVelocity.set(xlimit, ylimit);
 		 drag.x = maxVelocity.x * 4;
 
@@ -172,6 +176,9 @@
  		}
 		
 		velocity.y = FlxMath.lerp(velocity.y, maxVelocity.y, .01);
+
+		/*if (y >= 3750)
+			kill();*/
 		
     }
 
@@ -222,6 +229,31 @@
 			height = 150;
         }
 	}
+
+	public function death() {
+		if (species == 0) {
+			loadGraphic("assets/images/poomFrog.png", true, 50, 50);
+			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 8, false);
+			//animation.play("death");
+		} else if (species == 1) {
+			loadGraphic("assets/images/poomElephant.png", true, 25, 25);
+			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 8, false);
+			//animation.play("death"); }
+		/*} else if (species == 2) {
+			loadGraphic("assets/images/poomSquirrel.png", true, 50, 50);
+			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 2, false);
+			animation.play("death");*/
+		} else {
+			loadGraphic("assets/images/poomCobra.png", true, 50, 50);
+			animation.add("death", [0, 1, 2, 3, 4, 5, 6, 7], 8, false);
+		}
+		graphicLoaded();
+		animation.play("death");
+
+				//while (!dead) {}
+		//kill();
+	}
+
 	
     override public function update(elapsed:Float):Void {
     	movement();
