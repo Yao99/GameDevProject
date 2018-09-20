@@ -85,7 +85,7 @@ class LevelOneState extends FlxState {
 		
 		//background art
 		var _background:FlxButton = new FlxButton();
-		_background.loadGraphic("assets/images/background_test.png", true, 1350, 750);
+		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();
 		add(_background);
 		

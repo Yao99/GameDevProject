@@ -18,7 +18,7 @@ class MenuState extends FlxState
  }
 		super.create();
 		_background = new FlxSprite();
-		_background.loadGraphic("assets/images/background_test.png", true, 1350, 750);
+		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();
 		add(_background);
 		
