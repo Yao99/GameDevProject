@@ -34,7 +34,8 @@ class MenuState extends FlxState
 	}
 	
 	function clickPlay():Void{
-		FlxG.switchState(new LevelOneState());
+		//load level one
+		FlxG.switchState(new LevelTwoState());
 	}
 	
 }

@@ -14,9 +14,9 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
 
 /*
- *	Level One will load the first map and use the frog character
+ *	Level Two will load the second map and use the squirrel character
  */
-class LevelOneState extends FlxState {
+class LevelTwoState extends FlxState {
 	
 	var _player:Player;
 	//var _key:FlxSprite; // should key be a custom class?
@@ -35,7 +35,7 @@ class LevelOneState extends FlxState {
 	
 	override public function create():Void {
 		//load in first map
-		_map = new TiledMap(AssetPaths.firstmapdraft__tmx);
+		_map = new TiledMap(AssetPaths.secondmapdraft__tmx);
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
 		_mExpand = new FlxTilemap();
@@ -101,22 +101,22 @@ class LevelOneState extends FlxState {
 		add(_mExpand);
 		add(_mCage);
 
-		//pass 0 for frog, 1 for elephant
-		_player = new Player(0, 2400, 0);
+		//pass 0 for frog, 1 for squirrel, 2 for elephant, and 3 for cobra
+		_player = new Player(0, 975, 1);
 		/*var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		for (e in tmpMap.objects) {
 			placeEntities(e.type, e.xmlData.x);
 		}*/
 		add(_player);
 
-		_key = new Key(4125, 2025);
+		_key = new Key(1950, 975);
 		add(_key);
 
 		//(0, 1950) for start
 		//FlxG.camera.setPosition(0, 540);
 		FlxG.camera.setSize(1350, 750);
 		FlxG.camera.follow(_player, PLATFORMER, 1);
-		FlxG.worldBounds.set(0, 0, 11250, 5250);
+		FlxG.worldBounds.set(0, 0, 4125, 2025);
 
 
 		//adding a key
@@ -128,8 +128,9 @@ class LevelOneState extends FlxState {
 
 	override public function update(elapsed:Float):Void
 	{
-		FlxG.collide(_player, _mWalls);
-		//trace(_mExpand.overlapsWithCallback(_player));
+		//FlxG.collide(_player, _mWalls);
+		//trace(_mWalls.overlapsWithCallback(_player));
+		trace(_mExpand.overlapsWithCallback(_player));
 		if (_mExpand.overlapsWithCallback(_player)) {
 			_player.inCloud = true;
 			FlxObject.separate(_player, _mExpand);
@@ -152,7 +153,7 @@ class LevelOneState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
-		if (_player.y >= 3750)
+		if (_player.y >= 2025)
 			playerPop();
 
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
@@ -194,11 +195,11 @@ class LevelOneState extends FlxState {
 	function caged(object1:FlxObject, object2:FlxObject):Bool {
 		if (_player.has_key) {
 			//win
-			_player.squirrel = true;
+			_player.elephant = true;
 			levelWin();
 			return true;
 		}
-		FlxObject.separate(object1, object2);
+		//FlxObject.separate(object1, object2);
 		return false;
 	}
 
@@ -250,13 +251,6 @@ class LevelOneState extends FlxState {
 		_thanks.screenCenter();
 		_thanks.y -= 100;
 		add(_thanks);
-		_player.destroy();
-		//_map.destroy();
-		/*_mWalls.destroy();
-		_mSpikes.destroy();
-		_mExpand.destroy();
-		_mCage.destroy();*/
-		_key.destroy();
 		var _nextButton = new FlxButton(0, 0, "Next", nextlevel);
 		_nextButton.screenCenter();
 		add(_nextButton);
@@ -272,7 +266,7 @@ class LevelOneState extends FlxState {
 	}
 	
 	function reload() {
-		FlxG.switchState(new LevelOneState());
+		FlxG.switchState(new LevelTwoState());
 		
 		/*_player.x = 0;
 		_player.y =	2000;
@@ -286,8 +280,7 @@ class LevelOneState extends FlxState {
 		FlxG.switchState(new MenuState());
 	}
 	
-	function nextlevel (){
+	function nextlevel(){
 		//load next lvl
-		FlxG.switchState(new LevelTwoState());
 	}
 }
