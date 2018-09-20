@@ -87,11 +87,10 @@ class LevelOneState extends FlxState {
 		//collision directions for walls, spikes, and fans
 		
 		//background art
-		var _background:FlxSprite = new FlxSprite();
-		_background.loadGraphic("assets/images/Background.png", true, 5250, 2700);
+		var _background:FlxButton = new FlxButton();
+		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
+		_background.screenCenter();
 		add(_background);
-		_background.x -= 188;
-		_background.y += 1125;
 		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
