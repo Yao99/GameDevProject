@@ -19,7 +19,7 @@ import flixel.util.FlxTimer;
 class LevelOneState extends FlxState {
 	
 	var _player:Player;
-	var _key:FlxSprite; // should key be a custom class?
+	//var _key:FlxSprite; // should key be a custom class?
 	//var has_key:Bool = false;
 	var _map:TiledMap;
 	var _mWalls:FlxTilemap;
@@ -29,6 +29,9 @@ class LevelOneState extends FlxState {
 	var _mFan:FlxTilemap;
 	var deathTimer:FlxTimer;
 	var dying:Bool = false;
+	var _restartButton:FlxButton;
+	var _quitButton:FlxButton;
+	var _key:Key;
 	
 	override public function create():Void {
 		//load in first map
@@ -107,6 +110,9 @@ class LevelOneState extends FlxState {
 		}*/
 		add(_player);
 
+		_key = new Key(4125, 2025);
+		add(_key);
+
 		//(0, 1950) for start
 		//FlxG.camera.setPosition(0, 540);
 		FlxG.camera.setSize(1350, 750);
@@ -124,7 +130,7 @@ class LevelOneState extends FlxState {
 	override public function update(elapsed:Float):Void
 	{
 		FlxG.collide(_player, _mWalls);
-		trace(_mExpand.overlapsWithCallback(_player));
+		//trace(_mExpand.overlapsWithCallback(_player));
 		if (_mExpand.overlapsWithCallback(_player)) {
 			_player.inCloud = true;
 			FlxObject.separate(_player, _mExpand);
@@ -153,6 +159,9 @@ class LevelOneState extends FlxState {
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
 
+		if (_player.overlaps(_key))
+			collectKey();
+
 		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
@@ -177,7 +186,7 @@ class LevelOneState extends FlxState {
 		}
 	} 
 
-	function collectKey(object1:FlxObject, object2:FlxObject):Void {
+	function collectKey():Void {
 		//some collect key sound
 		_player.has_key = true;
 		_key.kill();
@@ -187,6 +196,7 @@ class LevelOneState extends FlxState {
 		if (_player.has_key) {
 			//win
 			_player.squirrel = true;
+			levelWin();
 			return true;
 		}
 		FlxObject.separate(object1, object2);
@@ -219,10 +229,10 @@ class LevelOneState extends FlxState {
 		deathTimer.start(0.875, function(Timer:FlxTimer) {
 			_player.gameOver.play();
 			_player.kill();
-			var _restartButton = new FlxButton(0, 0, "Restart", reload);
+			_restartButton = new FlxButton(0, 0, "Restart", reload);
 			_restartButton.screenCenter();
 			add(_restartButton);
-			var _quitButton = new FlxButton(0, 0, "Quit", quit);
+			_quitButton = new FlxButton(0, 0, "Quit", quit);
 			_quitButton.screenCenter();
 			_quitButton.y += 25;
 			add(_quitButton);
@@ -235,7 +245,7 @@ class LevelOneState extends FlxState {
 
 	}
 	
-	public function levelWin(){
+	public function levelWin():Void {
 		var _thanks = new FlxButton(0, 0);
 		_thanks.loadGraphic("assets/images/thanks.png", true, 600, 150);
 		_thanks.screenCenter();
@@ -255,11 +265,18 @@ class LevelOneState extends FlxState {
 		FlxObject.separate(object1, object2);
 	}
 	
-	function reload(){
+	function reload() {
 		FlxG.switchState(new LevelOneState());
+		
+		/*_player.x = 0;
+		_player.y =	2000;
+		_player.revive();
+		_restartButton.kill();
+		_quitButton.kill();
+		_player.speciesSetup();*/
 	}
 	
-	function quit(){
+	function quit() {
 		FlxG.switchState(new MenuState());
 	}
 	

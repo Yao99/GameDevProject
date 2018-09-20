@@ -254,7 +254,7 @@
 		
     }
 
-	function speciesSetup():Void {
+	public function speciesSetup():Void {
 		specSnake = specElephant = specSquirrel = specFrog = false;
 		if (touchingFloor)
 			y -= 50;
@@ -315,6 +315,7 @@
 			width = 78;
 			height = 99;
         }
+        graphicLoaded();
 	}
 
 	public function death() {
