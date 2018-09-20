@@ -114,7 +114,6 @@ class LevelOneState extends FlxState {
 		/*_key = new FlxSprite(300, 50, "assets/images/Key.png");
 		has_key = false;
 		add(_key);*/
-		
 		super.create();
 	}
 
@@ -223,6 +222,21 @@ class LevelOneState extends FlxState {
 		//return dead;
 
 	}
+	
+	public function levelWin(){
+		var _thanks = new FlxButton(0, 0);
+		_thanks.loadGraphic("assets/images/thanks.png", true, 600, 150);
+		_thanks.screenCenter();
+		_thanks.y -= 100;
+		add(_thanks);
+		var _nextButton = new FlxButton(0, 0, "Next", nextlevel);
+		_nextButton.screenCenter();
+		add(_nextButton);
+		var _quitButton = new FlxButton(0, 0, "Quit", quit);
+		_quitButton.screenCenter();
+		_quitButton.y += 25;
+		add(_quitButton);
+	}
 
 	function grounded(object1:FlxObject, object2:FlxObject):Void {
 		_player.touchingFloor = true;
@@ -235,5 +249,9 @@ class LevelOneState extends FlxState {
 	
 	function quit(){
 		FlxG.switchState(new MenuState());
+	}
+	
+	function nextlevel(){
+		//load next lvl
 	}
 }
