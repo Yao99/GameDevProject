@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="tilesetfinal" tilewidth="75" tileheight="75" tilecount="30" columns="0">
+<tileset name="tilesetfinal" tilewidth="75" tileheight="75" tilecount="34" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="2">
   <image width="75" height="75" source="PlatformAssets/CollapseBallonPart1.png"/>
@@ -90,5 +90,17 @@
  </tile>
  <tile id="31">
   <image width="75" height="75" source="PlatformAssets/SupportBalloonPart1v3.png"/>
+ </tile>
+ <tile id="32">
+  <image width="75" height="75" source="PlatformAssets/cage.png"/>
+ </tile>
+ <tile id="33">
+  <image width="75" height="75" source="PlatformAssets/elephantCage.png"/>
+ </tile>
+ <tile id="34">
+  <image width="75" height="75" source="PlatformAssets/squirrelCage.png"/>
+ </tile>
+ <tile id="35">
+  <image width="75" height="75" source="PlatformAssets/cobraCage.png"/>
  </tile>
 </tileset>
