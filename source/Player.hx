@@ -15,14 +15,15 @@
  	public var gravity:Float = 500;	//set to negative for fans?
     public var touchingFloor:Bool = true;
     public var touchingWall:Bool = false;
-    public var inCloud:Bool = true;
+    public var inCloud:Bool = false;
 	public var inflated:Bool = false;
-	public var elephant:Bool = true;	//start as false
-	public var squirrel:Bool = true;	//"   "
-	public var snake:Bool = true;		//"   "
+	public var elephant:Bool = false;	//start as false
+	public var squirrel:Bool = false;	//"   "
+	public var snake:Bool = false;		//"   "
 	public var species:Int = 0;
 	public var dead:Bool = false;
 	public var gameOver:FlxSound;
+	public var has_key:Bool = false;
 
 	private var xlimit:Float = 250;
  	private var ylimit:Float = 750;	
@@ -96,17 +97,19 @@
 		}
 
 		if (FlxG.keys.justPressed.DOWN && inCloud) {
-			animation.play("inhale");
-			//inflate
-			//while inCloud, track time
-			expandTimer.start(3, 0);
+			if (!inflated) {
+				animation.play("inhale");
+				//inflate
+				//while inCloud, track time
+				expandTimer.start(3, 0);
+			}
 			inflated = true;
 		}
 
 		if (FlxG.keys.justReleased.DOWN) {
-			expandTime = expandTimer.elapsedTime;
-			if (expandTime > 3)
-				expandTime = 3;
+			expandTime = expandTimer.elapsedTime * 2;
+			if (expandTime > 5)
+				expandTime = 5;
 			expandTimer.cancel();
 			animation.play("inhaled");
 		}
@@ -146,12 +149,12 @@
  					if (inflated)
  						velocity.y /= 2;	//jump nerfed
  					else if (specFrog) {	//can leap
- 						maxVelocity.y = ylimit * 2;
+ 						maxVelocity.y = ylimit * 1.7;
  						velocity.y = -maxVelocity.y;
  					} else if (!specFrog)
  						maxVelocity.y = ylimit;
  				} else if (specElephant)	//can multi-jump
- 					velocity.y = -maxVelocity.y;
+ 					velocity.y = -maxVelocity.y / 2;
  				else if (specSnake && touchingWall) {	//can wall jump
  					velocity.y = -maxVelocity.y; 
  				}
@@ -173,7 +176,7 @@
  					else 
  						animation.play("slowWalk");
  				} else if (!touchingFloor && specSquirrel) {
- 					acceleration.y = gravity / 4;
+ 					acceleration.y = gravity / 10;
  					animation.play("glide");
  				} else if (animation.name == "exhale" && animation.finished)
  						animation.play("walk");
