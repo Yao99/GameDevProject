@@ -9,6 +9,7 @@
  import flixel.math.FlxMath;
  import flixel.util.FlxTimer;
  import flixel.system.FlxSound;
+ import flixel.ui.FlxButton;
 
  class Player extends FlxSprite {
 	 
@@ -26,7 +27,7 @@
 	public var has_key:Bool = false;
 
 	private var xlimit:Float = 250;
- 	private var ylimit:Float = 750;	
+ 	private var ylimit:Float = 800;	
  	private var specFrog:Bool = false;
 	private var specElephant:Bool = false;
 	private var specSquirrel:Bool = false;
@@ -40,7 +41,7 @@
 	private var jumpSnd:FlxSound;
 	private var popSnd:FlxSound;
 	
-
+	var icons:Array<FlxButton> = new Array<FlxButton>();
 	
 	//species
 	//var oldSpecies:Int;
@@ -58,7 +59,43 @@
 		 deathTimer = new FlxTimer();
 		 maxVelocity.set(xlimit, ylimit);
 		 drag.x = maxVelocity.x * 4;
+		 
+		 if (s >= 1){
+			 squirrel = true;
+		 }
+		 
+		 if (s >= 2){
+			 elephant = true;
+		 }
 
+		 if (s >= 3){
+			 snake = true;
+		 }
+		 
+		 //create icons
+		 
+		 for (i in 0...4){
+		  icons.push(new FlxButton(i * 85, 0, "",changeSpecies.bind(i)));
+		  icons[i].loadGraphic("assets/images/icon_"+i+".png", true, 85, 85);
+		  icons[i].animation.add("unlocked", [0], 1, true);
+		  icons[i].animation.add("equipped", [1], 1, true);
+		  icons[i].animation.add("locked", [2], 1, true);
+		  if (species == i){
+			  icons[i].animation.play("equipped");
+		  }else{
+			icons[i].animation.play("unlocked");
+		  }
+		  if (i == 0){
+			  		  FlxG.state.add(icons[i]);
+		  }else if (i == 1 && squirrel){
+			  		  FlxG.state.add(icons[i]);
+		  }else if (i == 2 && elephant){
+		  		  FlxG.state.add(icons[i]);
+		  }else if (i == 3 && snake){
+		  		  FlxG.state.add(icons[i]);
+		  }
+
+		 }
      }
 	 
     function movement():Void {
@@ -78,13 +115,13 @@
 			}
 		}
 		if (FlxG.keys.justPressed.TWO){
-			if (species != 1 && elephant) {
+			if (species != 1 && squirrel) {
 				species = 1;
 				speciesSetup();
 			}
 		}
 		if (FlxG.keys.justPressed.THREE){
-			if (species != 2 && squirrel) {
+			if (species != 2 && elephant) {
 				species = 2;
 				speciesSetup();
 			}
@@ -146,9 +183,9 @@
  					velocity.y = -maxVelocity.y;
 					animation.play("jump");
 					jumpSnd.play();
- 					if (inflated)
- 						velocity.y /= 2;	//jump nerfed
- 					else if (specFrog) {	//can leap
+ 					/*if (inflated)
+ 						velocity.y /= 2;*/	//jump nerfed
+ 					if (specFrog) {	//can leap
  						maxVelocity.y = ylimit * 1.7;
  						velocity.y = -maxVelocity.y;
  					} else if (!specFrog)
@@ -170,17 +207,17 @@
 			
 			if (_left || _right && !(_left && _right)){
 				if (inflated) {
- 					velocity.x /= 2;
-					if (animation.name == "inhale" && animation.finished)
+ 					velocity.x /= 1.5;
+					/*if (animation.name == "inhale" && animation.finished)
  						animation.play("slowWalk");
  					else 
- 						animation.play("slowWalk");
+ 						animation.play("slowWalk");*/
  				} else if (!touchingFloor && specSquirrel) {
  					acceleration.y = gravity / 10;
  					animation.play("glide");
  				} else if (animation.name == "exhale" && animation.finished)
  						animation.play("walk");
- 				else 
+ 				else
  					animation.play("walk");
 			}
  		} else {
@@ -234,7 +271,7 @@
 			animation.add("jump", [7, 8, 9,0], 5, false);
 			width = 85;
 			height = 85;
-        } else if (species == 1) {
+        } else if (species == 2) {
         	/*if (!elephant) {
         		species = oldSpecies;
         		return;
@@ -251,7 +288,7 @@
 			animation.add("jump", [2, 3, 2,3], 5, false);
 			width = 85;
 			height = 85;
-        } else if (species == 2) {
+        } else if (species == 1) {
          	loadGraphic("assets/images/squirrelAnimations.png", true, 76, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
          	animation.add("glide", [8, 9, 8, 9], 1, true);
@@ -323,4 +360,9 @@
     	movement();
     	super.update(elapsed);
     }
+	
+	public function changeSpecies(i:Int):Void{
+		species = i;
+		speciesSetup();
+	}
 }
