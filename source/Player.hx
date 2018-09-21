@@ -220,7 +220,7 @@
  						animation.play("slowWalk");
  					else 
  						animation.play("slowWalk");*/
- 				} else if (floatingLeft)
+ 				} else if (floatingLeft && velocity.x > 0)
  					velocity.x /= 2;
  				else if (!touchingFloor && specSquirrel) {
  					//while (!touchingFloor)

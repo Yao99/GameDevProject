@@ -6,6 +6,7 @@ import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.addons.editors.tiled.*;
 import flixel.addons.tile.*;
+import flixel.addons.ui.FlxButtonPlus;
 import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
 import flixel.math.FlxPoint;
@@ -189,9 +190,9 @@ class LevelOneState extends FlxState {
 		if (_player.overlaps(_fSpikes1))
 			playerPop();
 		
-		if (_player.pause)
-			pauseMenu();
-		trace(_player.pause);
+		/*if (_player.pause)
+			pauseMenu();*/
+		//trace(_player.pause);
 		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
@@ -333,9 +334,9 @@ class LevelOneState extends FlxState {
 
 	function resume():Void {
 		_player.pause = false;
-		remove(_restartButton);
-		remove(_resumeButton);
-		remove(_quitButton);
+		_restartButton.kill();
+		_resumeButton.kill();
+		_quitButton.kill();
 	}
 	
 	function quit() {
