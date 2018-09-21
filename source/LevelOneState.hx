@@ -191,7 +191,7 @@ class LevelOneState extends FlxState {
 		
 		if (_player.pause)
 			pauseMenu();
-		trace(_player.pause);
+		//trace(_player.pause);
 		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);

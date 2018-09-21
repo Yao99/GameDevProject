@@ -34,7 +34,7 @@ class LevelFourState extends FlxState {
 	var _quitButton:FlxButton;
 	var _key:Key;
 	var _fSpikes:FloatySpikes;
-	var _fSpikes1:FloatySpikes;
+	var _fSpikes1:FloatySpikes;	 		
 	var trophy:FlxSprite;
 	var victoryMessage:FlxText;
 	var done:Bool = false;
