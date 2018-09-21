@@ -260,7 +260,7 @@ class LevelOneState extends FlxState {
 	
 	public function levelWin():Void {
 		var _thanks = new FlxButton(0, 0);
-		_thanks.loadGraphic("assets/images/thanks.png", true, 600, 150);
+		_thanks.loadGraphic("assets/images/recruitText.png", false, 225, 150);
 		_thanks.screenCenter();
 		_thanks.y -= 100;
 		add(_thanks);

@@ -33,6 +33,7 @@ class LevelThreeState extends FlxState {
 	var _quitButton:FlxButton;
 	var _key:Key;
 	var _fSpikes:FloatySpikes;
+	var _fSpikes1:FloatySpikes;
 	
 	override public function create():Void {
 		//load in first map
@@ -95,8 +96,12 @@ class LevelThreeState extends FlxState {
 		_background.screenCenter();
 		add(_background);
 		
-		_fSpikes = new FloatySpikes(37*75, 18*75, 0, 3, 37*75,37*75,22*75,14*75);
+		_fSpikes = new FloatySpikes(6*75, 8*75, 0, 3, 6*75,6*75,10*75,6*75);
 		add(_fSpikes);
+
+		_fSpikes1 = new FloatySpikes(18*75, 17*75, 3, 0, 22*75,14*75,17*75,17*75,true);
+		add(_fSpikes1);
+		
 		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
@@ -115,7 +120,7 @@ class LevelThreeState extends FlxState {
 		}*/
 		add(_player);
 
-		_key = new Key(750, 225);
+		_key = new Key(790, 260);
 		add(_key);
 
 		//(0, 1950) for start
@@ -179,7 +184,7 @@ class LevelThreeState extends FlxState {
 			
 		if (_player.overlaps(_fSpikes1))
 			playerPop();*/
-		if (_player.overlaps(_fSpikes))
+		if (_player.overlaps(_fSpikes) || _player.overlaps(_fSpikes1))
 			playerPop();
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
@@ -265,7 +270,7 @@ class LevelThreeState extends FlxState {
 	
 	public function levelWin():Void {
 		var _thanks = new FlxButton(0, 0);
-		_thanks.loadGraphic("assets/images/thanks.png", true, 600, 150);
+		_thanks.loadGraphic("assets/images/recruitText.png", false, 225, 150);
 		_thanks.screenCenter();
 		_thanks.y -= 100;
 		add(_thanks);
