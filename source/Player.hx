@@ -41,6 +41,9 @@
 	private var deathTimer:FlxTimer;
 	private var ribbitTimer:FlxTimer;
 	private var ribbit:FlxSound;
+	private var ele:FlxSound;
+	private var squ:FlxSound;
+	private var sna:FlxSound;
 	private var jumpSnd:FlxSound;
 	private var popSnd:FlxSound;
 	
@@ -370,13 +373,22 @@
 
 	public function soundSetup():Void {
 		ribbit = FlxG.sound.load(AssetPaths.ribbit__wav);
+		squ = FlxG.sound.load(AssetPaths.squ__wav);
+		sna = FlxG.sound.load(AssetPaths.sna__wav);
+		ele = FlxG.sound.load(AssetPaths.ele__wav);
 		ribbitTimer = new FlxTimer();
 		ribbitTimer.start(7, function(Timer:FlxTimer) {
 			if (species == 0 && alive)
 				ribbit.play();
+			if (species == 1 && alive)
+				squ.play();
+			if (species == 2 && alive)
+				ele.play();
+			if (species == 3 && alive)
+				sna.play();
 		}, 0);
 		jumpSnd= FlxG.sound.load(AssetPaths.jumpShort__wav);
-		popSnd = FlxG.sound.load(AssetPaths.pop__wav);
+		popSnd = FlxG.sound.load(AssetPaths.pop__wav, 20);
 		gameOver = FlxG.sound.load(AssetPaths.game_over__wav);
 
 	}

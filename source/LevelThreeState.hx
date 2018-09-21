@@ -41,6 +41,13 @@ class LevelThreeState extends FlxState {
 	var done:Bool = false;
 	
 	override public function create():Void {
+		
+		if (FlxG.sound.music != null) // don't restart the music if it's already playing
+	{
+	 FlxG.sound.music.destroy;
+    
+	}
+	 FlxG.sound.playMusic(AssetPaths.elephantSong__wav, 1, true);
 		//load in first map
 		_map = new TiledMap(AssetPaths.thirdmapdraft__tmx);
 		_mWalls = new FlxTilemap();
@@ -101,11 +108,11 @@ class LevelThreeState extends FlxState {
 		_background.screenCenter();
 		add(_background);
 		
-		_fSpikes = new FloatySpikes(6*75, 6*75, 3, 0, 10*75,2*75,6*75,6*75);
+		_fSpikes = new FloatySpikes(6*75, 6*75, 3, 0, 10*75,2*75,6*75,6*75,true);
 		add(_fSpikes);
-		_fSpikes1 = new FloatySpikes(6*75, 8*75, 3, 0, 10*75,2*75,8*75,8*75);
+		_fSpikes1 = new FloatySpikes(6*75, 8*75, 3, 0, 10*75,2*75,8*75,8*75,true);
 		add(_fSpikes1);
-		_fSpikes2 = new FloatySpikes(6*75, 10*75, 3, 0, 10*75,2*75,10*75,10*75);
+		_fSpikes2 = new FloatySpikes(6*75, 10*75, 3, 0, 10*75,2*75,10*75,10*75,true);
 		add(_fSpikes2);
 		
 		_fSpikes3 = new FloatySpikes(14*75, 17*75, 0, 3, 14*75,14*75,21*75,13*75);

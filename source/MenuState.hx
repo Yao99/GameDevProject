@@ -14,11 +14,15 @@ class MenuState extends FlxState
 	
 	override public function create():Void
 	{
-		if (FlxG.sound.music == null) // don't restart the music if it's already playing
+		if (FlxG.sound.music != null) // don't restart the music if it's already playing
  {
-     FlxG.sound.playMusic(AssetPaths.mainMenu__wav, 1, true);
+      FlxG.sound.music.destroy;
+
  }
+ 
+ FlxG.sound.playMusic(AssetPaths.mainMenu__wav, 1, true);
 		super.create();
+		FlxG.mouse.useSystemCursor = true;
 		_background = new FlxSprite();
 		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();

@@ -38,6 +38,12 @@ class LevelOneState extends FlxState {
 	var done:Bool = false;
 	
 	override public function create():Void {
+		if (FlxG.sound.music != null) // don't restart the music if it's already playing
+ {
+     FlxG.sound.music.destroy;
+	
+ }
+        FlxG.sound.playMusic(AssetPaths.frogSong__wav, 1, true);
 		//load in first map
 		_map = new TiledMap(AssetPaths.firstmapdraft__tmx);
 		_mWalls = new FlxTilemap();
@@ -265,6 +271,7 @@ class LevelOneState extends FlxState {
 
 	public function deathCheck():Void {
 		deathTimer.start(0.875, function(Timer:FlxTimer) {
+			FlxG.sound.pause();
 			_player.gameOver.play();
 			_player.kill();
 			_restartButton = new FlxButton(0, 0, "Restart", reload);

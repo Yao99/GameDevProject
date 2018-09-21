@@ -36,7 +36,8 @@ class LevelTwoState extends FlxState {
 	var done:Bool = false;
 	
 	override public function create():Void {
-		//load in first map
+		
+		//load in second map
 		_map = new TiledMap(AssetPaths.secondmapdraft__tmx);
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
@@ -44,7 +45,13 @@ class LevelTwoState extends FlxState {
 		_mCage = new FlxTilemap();
 		_mFan = new FlxTilemap();
 		deathTimer = new FlxTimer();
-
+		
+		if (FlxG.sound.music != null) // don't restart the music if it's already playing
+	{
+	 FlxG.sound.music.destroy;
+     
+	}
+FlxG.sound.playMusic(AssetPaths.squirrelSong__wav, 1, true);
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
 		for (i in 0...2) 
