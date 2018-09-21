@@ -32,6 +32,7 @@ class LevelTwoState extends FlxState {
 	var _restartButton:FlxButton;
 	var _quitButton:FlxButton;
 	var _key:Key;
+	var _fSpikes:FloatySpikes;
 	
 	override public function create():Void {
 		//load in first map
@@ -91,6 +92,9 @@ class LevelTwoState extends FlxState {
 		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();
 		add(_background);
+		
+		_fSpikes = new FloatySpikes(37*75, 18*75, 0, 3, 37*75,37*75,22*75,14*75);
+		add(_fSpikes);
 		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
