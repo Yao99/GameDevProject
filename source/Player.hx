@@ -281,6 +281,7 @@
 			animation.add("jump", [7, 8, 9,0], 5, false);
 			width = 85;
 			height = 85;
+			updateHitbox();
         } else if (species == 2) {
         	/*if (!elephant) {
         		species = oldSpecies;
@@ -298,6 +299,7 @@
 			animation.add("jump", [2, 3, 2,3], 5, false);
 			width = 85;
 			height = 85;
+			updateHitbox();
         } else if (species == 1) {
          	loadGraphic("assets/images/squirrelAnimations.png", true, 76, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
@@ -312,6 +314,7 @@
 			animation.add("jump", [6, 7, 7], 5, false);
 			width = 76;
 			height = 85;
+			updateHitbox();
         } else if (species == 3) {
         	loadGraphic("assets/images/CobraAnimations.png", true, 78, 99);
          	setFacingFlip(FlxObject.LEFT, true, false);
@@ -325,6 +328,7 @@
 			animation.add("jump", [3, 5 ,5], 5, false);
 			width = 78;
 			height = 99;
+			updateHitbox();
         }
         graphicLoaded();
 	}

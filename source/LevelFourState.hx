@@ -286,6 +286,7 @@ class LevelFourState extends FlxState {
 		_thanks.y -= 100;
 		add(_thanks);*/
 		_player.destroy();
+		trophy.destroy();
 		/*victoryMessage = new FlxText(0, 0, FlxG.width, "Congrats: You win!", 64);
 		victoryMessage.setFormat(null, 64, FlxColor.GRAY, CENTER);
 		//victoryMessage.screenCenter();
