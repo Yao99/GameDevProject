@@ -178,7 +178,8 @@ class LevelTwoState extends FlxState {
 			
 		if (_player.overlaps(_fSpikes1))
 			playerPop();*/
-		
+		if (_player.overlaps(_fSpikes))
+			playerPop();
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
