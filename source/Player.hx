@@ -377,7 +377,7 @@
 		sna = FlxG.sound.load(AssetPaths.sna__wav);
 		ele = FlxG.sound.load(AssetPaths.ele__wav);
 		ribbitTimer = new FlxTimer();
-		ribbitTimer.start(7, function(Timer:FlxTimer) {
+		ribbitTimer.start(6, function(Timer:FlxTimer) {
 			if (species == 0 && alive)
 				ribbit.play();
 			if (species == 1 && alive)
