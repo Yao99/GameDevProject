@@ -139,13 +139,13 @@
 				animation.play("inhale");
 				//inflate
 				//while inCloud, track time
-				expandTimer.start(3, 0);
+				expandTimer.start(1, 0);
 			}
 			inflated = true;
 		}
 
 		if (FlxG.keys.justReleased.DOWN) {
-			expandTime = expandTimer.elapsedTime * 2;
+			expandTime = expandTimer.elapsedTime * 5;
 			if (expandTime > 5)
 				expandTime = 5;
 			expandTimer.cancel();
@@ -166,7 +166,7 @@
 				//expandTime = 10;
 			} else 
 				specFrog = true;
-			specTimer.start(expandTime, function(Timer:FlxTimer) {specSnake = specElephant = specSquirrel = specFrog = false;}, 1);
+			specTimer.start(5, function(Timer:FlxTimer) {specSnake = specElephant = specSquirrel = specFrog = false;}, 1);
 			
 		}
 
@@ -245,13 +245,13 @@
 			specSquirrel = false;
 
  		//reset !!!!!!!!!!!!!!!!REMOVE LATER!!!!!!!!!!!!!!!!!!	
- 		if (FlxG.keys.pressed.BACKSPACE) {
+ 		/*if (FlxG.keys.pressed.BACKSPACE) {
  			x = 0;
  			y = 2400;
  			inflated = false;
 			specSnake = specElephant = specSquirrel = specFrog = false;
  		}
-		
+*/		
 		//acceleration.x = 0;
 		if (!specSquirrel || touchingFloor || (_left && _right) || !(_left || _right)) {
 			acceleration.y = gravity;

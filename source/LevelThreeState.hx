@@ -14,7 +14,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
 
 /*
- *	Level Two will load the second map and use the squirrel character
+ *	Level Three will load the third map and use the elephant character
  */
 class LevelThreeState extends FlxState {
 	
@@ -168,11 +168,11 @@ class LevelThreeState extends FlxState {
 			playerPop();
 
 
-		if (_player.x >= 3400 && _player.x <= 3500)
+		/*if (_player.x >= 3400 && _player.x <= 3500)
 			_player.floating = true;
 		else 
 			_player.floating = false;
-
+*/
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
 
@@ -274,6 +274,8 @@ class LevelThreeState extends FlxState {
 		_thanks.screenCenter();
 		_thanks.y -= 100;
 		add(_thanks);
+		_player.destroy();
+		_key.destroy();
 		var _nextButton = new FlxButton(0, 0, "Next", nextlevel);
 		_nextButton.screenCenter();
 		add(_nextButton);
@@ -305,6 +307,6 @@ class LevelThreeState extends FlxState {
 	
 	function nextlevel(){
 		//load next lvl
-
+		FlxG.switchState(new LevelFourState());
 	}
 }
