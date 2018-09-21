@@ -288,7 +288,11 @@ class LevelFourState extends FlxState {
 		_thanks.y -= 100;
 		add(_thanks);
 		_player.destroy();
-		_key.destroy();
+		trophy.destroy();
+		/*victoryMessage = new FlxText(0, 0, FlxG.width, "Congrats: You win!", 64);
+		victoryMessage.setFormat(null, 64, FlxColor.GRAY, CENTER);
+		//victoryMessage.screenCenter();
+		add(victoryMessage);*/
 		var _nextButton = new FlxButton(0, 0, "Play Again", nextlevel);
 		_nextButton.screenCenter();
 		add(_nextButton);

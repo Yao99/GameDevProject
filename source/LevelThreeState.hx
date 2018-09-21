@@ -232,11 +232,13 @@ class LevelThreeState extends FlxState {
 	}
 
 	function caged(object1:FlxObject, object2:FlxObject):Bool {
-		if (_player.has_key) {
-			//win
-			_player.snake = true;
-			levelWin();
-			return true;
+		if (_player.x >= 2075 && _player.x <= 2250 && _player.y >=1175) {
+			if (_player.has_key) {
+				//win
+				_player.snake = true;
+				levelWin();
+				return true;
+			}
 		}
 		FlxObject.separate(object1, object2);
 		return false;

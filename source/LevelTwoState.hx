@@ -159,7 +159,7 @@ class LevelTwoState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
-		if (_player.y >= 3750 || _player.y < 300)
+		if (_player.y >= 1875 || _player.y < 300)
 			playerPop();
 
 
@@ -211,11 +211,13 @@ class LevelTwoState extends FlxState {
 	}
 
 	function caged(object1:FlxObject, object2:FlxObject):Bool {
-		if (_player.has_key) {
-			//win
-			_player.elephant = true;
-			levelWin();
-			return true;
+		if (_player.x >= 3675 && _player.x <= 3825 && _player.y >=650) {
+			if (_player.has_key) {
+				//win
+				_player.elephant = true;
+				levelWin();
+				return true;
+			}
 		}
 		FlxObject.separate(object1, object2);
 		return false;
