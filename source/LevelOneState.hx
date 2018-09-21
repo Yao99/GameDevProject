@@ -37,7 +37,7 @@ class LevelOneState extends FlxState {
 	var done:Bool = false;
 	
 	override public function create():Void {
-		if (FlxG.sound.music == playing) // don't restart the music if it's already playing
+		if (FlxG.sound.music != null) // don't restart the music if it's already playing
  {
      FlxG.sound.music.destroy;
 	 FlxG.sound.playMusic(AssetPaths.mainMenu__wav, 1, true);

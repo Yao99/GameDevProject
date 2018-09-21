@@ -41,6 +41,12 @@ class LevelThreeState extends FlxState {
 	var done:Bool = false;
 	
 	override public function create():Void {
+		
+		if (FlxG.sound.music != null) // don't restart the music if it's already playing
+	{
+	 FlxG.sound.music.destroy;
+     FlxG.sound.playMusic(AssetPaths.elephantSong__wav, 1, true);
+	}
 		//load in first map
 		_map = new TiledMap(AssetPaths.thirdmapdraft__tmx);
 		_mWalls = new FlxTilemap();

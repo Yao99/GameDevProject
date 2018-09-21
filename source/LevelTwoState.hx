@@ -49,7 +49,7 @@ class LevelTwoState extends FlxState {
 		if (FlxG.sound.music != null) // don't restart the music if it's already playing
 	{
 	 FlxG.sound.music.destroy;
-     FlxG.sound.playMusic(AssetPaths.snakeSong__wav, 1, true);
+     FlxG.sound.playMusic(AssetPaths.squirrelSong__wav, 1, true);
 	}
 
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
