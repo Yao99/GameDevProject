@@ -32,6 +32,7 @@ class LevelTwoState extends FlxState {
 	var _restartButton:FlxButton;
 	var _quitButton:FlxButton;
 	var _key:Key;
+	var _fSpikes:FloatySpikes;
 	
 	override public function create():Void {
 		//load in first map
@@ -50,6 +51,8 @@ class LevelTwoState extends FlxState {
 		//_mWalls.setTileProperties(1, FlxObject.ANY);
 		for (i in 17...32)
 			_mWalls.setTileProperties(i, FlxObject.ANY);
+		_mWalls.setTileProperties(36, FlxObject.NONE);
+
 		/*for (i in 32...36)
 			_mWalls.setTileProperties(i, FlxObject.NONE);*/
 
@@ -91,6 +94,9 @@ class LevelTwoState extends FlxState {
 		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();
 		add(_background);
+		
+		_fSpikes = new FloatySpikes(37*75, 18*75, 0, 3, 37*75,37*75,22*75,14*75);
+		add(_fSpikes);
 		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
@@ -152,8 +158,14 @@ class LevelTwoState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
-		if (_player.y >= 3750)
+		if (_player.y >= 3750 || _player.y < 300)
 			playerPop();
+
+
+		if (_player.x >= 3400 && _player.x <= 3500)
+			_player.floating = true;
+		else 
+			_player.floating = false;
 
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
@@ -166,7 +178,8 @@ class LevelTwoState extends FlxState {
 			
 		if (_player.overlaps(_fSpikes1))
 			playerPop();*/
-		
+		if (_player.overlaps(_fSpikes))
+			playerPop();
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
@@ -203,7 +216,7 @@ class LevelTwoState extends FlxState {
 			levelWin();
 			return true;
 		}
-		//FlxObject.separate(object1, object2);
+		FlxObject.separate(object1, object2);
 		return false;
 	}
 
@@ -286,5 +299,6 @@ class LevelTwoState extends FlxState {
 	
 	function nextlevel(){
 		//load next lvl
+
 	}
 }
