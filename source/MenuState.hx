@@ -9,6 +9,7 @@ class MenuState extends FlxState
 {
 	var _playButton: FlxButton;
 	var _background: FlxSprite;
+	var _exitButton: FlxButton;
 	
 	override public function create():Void
 	{
@@ -25,7 +26,14 @@ class MenuState extends FlxState
 		_playButton = new FlxButton(0, 0, clickPlay);
 		_playButton.loadGraphic("assets/images/play.png", true, 300, 150);
 		_playButton.screenCenter();
+		_playButton.y -= 80;
 		add(_playButton);
+		
+		_exitButton = new FlxButton(0, 0, clickExit);
+		_exitButton.loadGraphic("assets/images/Exit.png", true, 225, 150);
+		_exitButton.screenCenter();
+		_exitButton.y += 80;
+		add(_exitButton);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -36,6 +44,11 @@ class MenuState extends FlxState
 	function clickPlay():Void{
 		//load level one
 		FlxG.switchState(new LevelTwoState());
+	}
+	
+	function clickExit():Void{
+		//load level one
+		Sys.exit(0);
 	}
 	
 }
