@@ -152,8 +152,14 @@ class LevelTwoState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
-		if (_player.y >= 3750)
+		if (_player.y >= 3750 || _player.y < 300)
 			playerPop();
+
+
+		if (_player.x >= 3400 && _player.x <= 3500)
+			_player.floating = true;
+		else 
+			_player.floating = false;
 
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
@@ -203,7 +209,7 @@ class LevelTwoState extends FlxState {
 			levelWin();
 			return true;
 		}
-		//FlxObject.separate(object1, object2);
+		FlxObject.separate(object1, object2);
 		return false;
 	}
 
@@ -286,5 +292,6 @@ class LevelTwoState extends FlxState {
 	
 	function nextlevel(){
 		//load next lvl
+
 	}
 }

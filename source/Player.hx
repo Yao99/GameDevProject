@@ -25,6 +25,7 @@
 	public var dead:Bool = false;
 	public var gameOver:FlxSound;
 	public var has_key:Bool = false;
+	public var floating:Bool = false;
 
 	private var xlimit:Float = 250;
  	private var ylimit:Float = 800;	
@@ -251,17 +252,15 @@
 			specSnake = specElephant = specSquirrel = specFrog = false;
  		}
 		
-		acceleration.x = 0;
+		//acceleration.x = 0;
 		if (!specSquirrel || touchingFloor || (_left && _right) || !(_left || _right)) {
 			acceleration.y = gravity;
-			velocity.y = FlxMath.lerp(velocity.y, maxVelocity.y, .01);
+			if (!floating)
+				velocity.y = FlxMath.lerp(velocity.y, maxVelocity.y, .01);
 		}
+		if (floating)
+			acceleration.y = -100;
 
-		trace(acceleration.y);
-		
-
-		/*if (y >= 3750)
-			kill();*/
 		
     }
 
