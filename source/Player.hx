@@ -254,7 +254,7 @@
 		
     }
 
-	function speciesSetup():Void {
+	public function speciesSetup():Void {
 		specSnake = specElephant = specSquirrel = specFrog = false;
 		if (touchingFloor)
 			y -= 50;
@@ -315,6 +315,7 @@
 			width = 78;
 			height = 99;
         }
+        graphicLoaded();
 	}
 
 	public function death() {
@@ -343,7 +344,7 @@
 	}
 
 	public function soundSetup():Void {
-		ribbit = FlxG.sound.load(AssetPaths.Ribbit__wav);
+		ribbit = FlxG.sound.load(AssetPaths.ribbit__wav);
 		ribbitTimer = new FlxTimer();
 		ribbitTimer.start(7, function(Timer:FlxTimer) {
 			if (species == 0 && alive)

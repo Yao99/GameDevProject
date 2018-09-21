@@ -18,9 +18,9 @@ class MenuState extends FlxState
  }
 		super.create();
 		_background = new FlxSprite();
-		/*make background image here
-		_background.loadGraphic();
-		add(_background);*/
+		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
+		_background.screenCenter();
+		add(_background);
 		
 		_playButton = new FlxButton(0, 0, clickPlay);
 		_playButton.loadGraphic("assets/images/play.png", true, 300, 150);
@@ -34,8 +34,8 @@ class MenuState extends FlxState
 	}
 	
 	function clickPlay():Void{
-		FlxG.switchState(new LevelOneState());
-		FlxG.sound.music.pause();
+		//load level one
+		FlxG.switchState(new LevelTwoState());
 	}
 	
 }
