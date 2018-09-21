@@ -165,6 +165,11 @@ class LevelOneState extends FlxState {
 		if (_player.y >= 3750)
 			playerPop();
 
+		if (_player.y >= 1500 && _player.y <= 2100 && _player.x >= 3750)
+			_player.floatingLeft = true;
+		else 
+			_player.floatingLeft = false;
+
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
 

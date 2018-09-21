@@ -7,9 +7,10 @@ import flixel.FlxSprite;
 
 class MenuState extends FlxState
 {
-	var _playButton: FlxButton;
-	var _background: FlxSprite;
-	var _exitButton: FlxButton;
+	var _playButton:FlxButton;
+	var _background:FlxSprite;
+	var _exitButton:FlxButton;
+	var _selectButton:FlxButton;
 	
 	override public function create():Void
 	{
@@ -28,6 +29,9 @@ class MenuState extends FlxState
 		_playButton.screenCenter();
 		_playButton.y -= 80;
 		add(_playButton);
+
+		_selectButton = new FlxButton(0, 0, levelSelect);
+		_selectButton.loadGraphic("")
 		
 		_exitButton = new FlxButton(0, 0, clickExit);
 		_exitButton.loadGraphic("assets/images/Exit.png", true, 225, 150);
@@ -43,7 +47,7 @@ class MenuState extends FlxState
 	
 	function clickPlay():Void{
 		//load level one
-		FlxG.switchState(new LevelTwoState());
+		FlxG.switchState(new LevelOneState());
 	}
 	
 	function clickExit():Void{
