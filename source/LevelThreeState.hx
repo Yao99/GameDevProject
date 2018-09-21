@@ -16,7 +16,7 @@ import flixel.util.FlxTimer;
 /*
  *	Level Two will load the second map and use the squirrel character
  */
-class LevelTwoState extends FlxState {
+class LevelThreeState extends FlxState {
 	
 	var _player:Player;
 	//var _key:FlxSprite; // should key be a custom class?
@@ -36,7 +36,7 @@ class LevelTwoState extends FlxState {
 	
 	override public function create():Void {
 		//load in first map
-		_map = new TiledMap(AssetPaths.secondmapdraft__tmx);
+		_map = new TiledMap(AssetPaths.thirdmapdraft__tmx);
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
 		_mExpand = new FlxTilemap();
@@ -108,21 +108,21 @@ class LevelTwoState extends FlxState {
 		add(_mCage);
 
 		//pass 0 for frog, 1 for squirrel, 2 for elephant, and 3 for cobra
-		_player = new Player(0, 975, 1);
+		_player = new Player(0, 50, 2);
 		/*var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		for (e in tmpMap.objects) {
 			placeEntities(e.type, e.xmlData.x);
 		}*/
 		add(_player);
 
-		_key = new Key(1950, 975);
+		_key = new Key(750, 225);
 		add(_key);
 
 		//(0, 1950) for start
 		//FlxG.camera.setPosition(0, 540);
 		FlxG.camera.setSize(1350, 750);
 		FlxG.camera.follow(_player, PLATFORMER, 1);
-		FlxG.worldBounds.set(0, 0, 4125, 2025);
+		FlxG.worldBounds.set(0, 0, 1200, 1650);
 
 
 		//adding a key
@@ -134,7 +134,8 @@ class LevelTwoState extends FlxState {
 
 	override public function update(elapsed:Float):Void
 	{
-		FlxG.collide(_player, _mWalls);
+		if (_player.overlaps(_mWalls))
+			FlxObject.separate(_player, _mWalls);
 		//trace(_mExpand.overlapsWithCallback(_player));
 		if (_mExpand.overlapsWithCallback(_player)) {
 			_player.inCloud = true;
@@ -158,7 +159,7 @@ class LevelTwoState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
-		if (_player.y >= 3750 || _player.y < 300)
+		if (_player.y >= 1650 || _player.y < 0)
 			playerPop();
 
 
@@ -212,7 +213,7 @@ class LevelTwoState extends FlxState {
 	function caged(object1:FlxObject, object2:FlxObject):Bool {
 		if (_player.has_key) {
 			//win
-			_player.elephant = true;
+			_player.snake = true;
 			levelWin();
 			return true;
 		}
@@ -283,7 +284,7 @@ class LevelTwoState extends FlxState {
 	}
 	
 	function reload() {
-		FlxG.switchState(new LevelTwoState());
+		FlxG.switchState(new LevelThreeState());
 		
 		/*_player.x = 0;
 		_player.y =	2000;
@@ -299,7 +300,6 @@ class LevelTwoState extends FlxState {
 	
 	function nextlevel(){
 		//load next lvl
-		FlxG.switchState(new LevelThreeState());
 
 	}
 }

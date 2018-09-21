@@ -43,7 +43,7 @@ class MenuState extends FlxState
 	
 	function clickPlay():Void{
 		//load level one
-		FlxG.switchState(new LevelOneState());
+		FlxG.switchState(new LevelThreeState());
 	}
 	
 	function clickExit():Void{
