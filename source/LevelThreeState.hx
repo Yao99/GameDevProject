@@ -14,9 +14,9 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
 
 /*
- *	Level Two will load the second map and use the squirrel character
+ *	Level Three will load the third map and use the elephant character
  */
-class LevelTwoState extends FlxState {
+class LevelThreeState extends FlxState {
 	
 	var _player:Player;
 	//var _key:FlxSprite; // should key be a custom class?
@@ -33,24 +33,22 @@ class LevelTwoState extends FlxState {
 	var _quitButton:FlxButton;
 	var _key:Key;
 	var _fSpikes:FloatySpikes;
+	var _fSpikes1:FloatySpikes;
+	var _fSpikes2:FloatySpikes;
+	var _fSpikes3:FloatySpikes;
+	var _fSpikes4:FloatySpikes;
+	var _fSpikes5:FloatySpikes;
 	var done:Bool = false;
 	
 	override public function create():Void {
-		
-		//load in second map
-		_map = new TiledMap(AssetPaths.secondmapdraft__tmx);
+		//load in first map
+		_map = new TiledMap(AssetPaths.thirdmapdraft__tmx);
 		_mWalls = new FlxTilemap();
 		_mSpikes = new FlxTilemap();
 		_mExpand = new FlxTilemap();
 		_mCage = new FlxTilemap();
 		_mFan = new FlxTilemap();
 		deathTimer = new FlxTimer();
-		
-		if (FlxG.sound.music != null) // don't restart the music if it's already playing
-	{
-	 FlxG.sound.music.destroy;
-     FlxG.sound.playMusic(AssetPaths.snakeSong__wav, 1, true);
-	}
 
 		_mWalls.loadMapFromArray(cast(_map.getLayer("Walls"), TiledTileLayer).tileArray, _map.width, _map.height, 
 			AssetPaths.tilesetfinal__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
@@ -103,8 +101,21 @@ class LevelTwoState extends FlxState {
 		_background.screenCenter();
 		add(_background);
 		
-		_fSpikes = new FloatySpikes(37*75, 18*75, 0, 3, 37*75,37*75,22*75,14*75);
+		_fSpikes = new FloatySpikes(6*75, 6*75, 3, 0, 10*75,2*75,6*75,6*75);
 		add(_fSpikes);
+		_fSpikes1 = new FloatySpikes(6*75, 8*75, 3, 0, 10*75,2*75,8*75,8*75);
+		add(_fSpikes1);
+		_fSpikes2 = new FloatySpikes(6*75, 10*75, 3, 0, 10*75,2*75,10*75,10*75);
+		add(_fSpikes2);
+		
+		_fSpikes3 = new FloatySpikes(14*75, 17*75, 0, 3, 14*75,14*75,21*75,13*75);
+		add(_fSpikes3);
+		_fSpikes4 = new FloatySpikes(18*75, 17*75, 0, 3, 18*75,18*75,21*75,13*75);
+		add(_fSpikes4);
+		_fSpikes5 = new FloatySpikes(22*75, 17*75, 0, 3, 22*75,22*75,21*75,13*75);
+		add(_fSpikes5);
+		
+		
 		
 		_mWalls.immovable = true;
 		_mSpikes.immovable = true;
@@ -116,21 +127,21 @@ class LevelTwoState extends FlxState {
 		add(_mCage);
 
 		//pass 0 for frog, 1 for squirrel, 2 for elephant, and 3 for cobra
-		_player = new Player(0, 975, 1);
+		_player = new Player(0, 50, 2);
 		/*var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		for (e in tmpMap.objects) {
 			placeEntities(e.type, e.xmlData.x);
 		}*/
 		add(_player);
 
-		_key = new Key(1950, 975);
+		_key = new Key(790, 260);
 		add(_key);
 
 		//(0, 1950) for start
 		//FlxG.camera.setPosition(0, 540);
 		FlxG.camera.setSize(1350, 750);
 		FlxG.camera.follow(_player, PLATFORMER, 1);
-		FlxG.worldBounds.set(0, 0, 4125, 2025);
+		FlxG.worldBounds.set(0, 0, 1200, 1650);
 
 
 		//adding a key
@@ -142,7 +153,8 @@ class LevelTwoState extends FlxState {
 
 	override public function update(elapsed:Float):Void
 	{
-		FlxG.collide(_player, _mWalls);
+		if (_player.overlaps(_mWalls))
+			FlxObject.separate(_player, _mWalls);
 		//trace(_mExpand.overlapsWithCallback(_player));
 		if (_mExpand.overlapsWithCallback(_player)) {
 			_player.inCloud = true;
@@ -166,15 +178,15 @@ class LevelTwoState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
-		if (_player.y >= 1875 || _player.y < 300)
+		if (_player.y >= 1650 || _player.y < 0)
 			playerPop();
 
 
-		if (_player.x >= 3400 && _player.x <= 3500)
+		/*if (_player.x >= 3400 && _player.x <= 3500)
 			_player.floating = true;
 		else 
 			_player.floating = false;
-
+*/
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
 
@@ -186,7 +198,9 @@ class LevelTwoState extends FlxState {
 			
 		if (_player.overlaps(_fSpikes1))
 			playerPop();*/
-		if (_player.overlaps(_fSpikes))
+		if (_player.overlaps(_fSpikes) || _player.overlaps(_fSpikes1)
+		|| _player.overlaps(_fSpikes2) || _player.overlaps(_fSpikes3)
+		|| _player.overlaps(_fSpikes4) || _player.overlaps(_fSpikes5))
 			playerPop();
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
@@ -218,10 +232,10 @@ class LevelTwoState extends FlxState {
 	}
 
 	function caged(object1:FlxObject, object2:FlxObject):Bool {
-		if (_player.x >= 3675 && _player.x <= 3825 && _player.y >=650) {
+		if (_player.x >= 2075 && _player.x <= 2250 && _player.y >=1175) {
 			if (_player.has_key) {
 				//win
-				_player.elephant = true;
+				_player.snake = true;
 				levelWin();
 				return true;
 			}
@@ -298,7 +312,7 @@ class LevelTwoState extends FlxState {
 	}
 	
 	function reload() {
-		FlxG.switchState(new LevelTwoState());
+		FlxG.switchState(new LevelThreeState());
 		
 		/*_player.x = 0;
 		_player.y =	2000;
@@ -314,7 +328,6 @@ class LevelTwoState extends FlxState {
 	
 	function nextlevel(){
 		//load next lvl
-		FlxG.switchState(new LevelThreeState());
-
+		FlxG.switchState(new LevelFourState());
 	}
 }

@@ -34,6 +34,7 @@ class LevelOneState extends FlxState {
 	var _restartButton:FlxButton;
 	var _quitButton:FlxButton;
 	var _key:Key;
+	var done:Bool = false;
 	
 	override public function create():Void {
 		if (FlxG.sound.music == playing) // don't restart the music if it's already playing
@@ -170,6 +171,11 @@ class LevelOneState extends FlxState {
 		if (_player.y >= 3750)
 			playerPop();
 
+		if (_player.y >= 1500 && _player.y <= 2100 && _player.x >= 3750)
+			_player.floatingLeft = true;
+		else 
+			_player.floatingLeft = false;
+
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
 		_mSpikes.overlapsWithCallback(_player, spikeHit);
 
@@ -266,8 +272,9 @@ class LevelOneState extends FlxState {
 	}
 	
 	public function levelWin():Void {
+		if(!done){
 		var _thanks = new FlxButton(0, 0);
-		_thanks.loadGraphic("assets/images/thanks.png", true, 600, 150);
+		_thanks.loadGraphic("assets/images/recruitText.png", false, 225, 150);
 		_thanks.screenCenter();
 		_thanks.y -= 100;
 		add(_thanks);
@@ -285,6 +292,8 @@ class LevelOneState extends FlxState {
 		_quitButton.screenCenter();
 		_quitButton.y += 25;
 		add(_quitButton);
+		}
+		done = true;
 	}
 
 	function grounded(object1:FlxObject, object2:FlxObject):Void {
