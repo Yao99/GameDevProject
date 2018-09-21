@@ -18,6 +18,7 @@ class MenuState extends FlxState
      FlxG.sound.playMusic(AssetPaths.mainMenu__wav, 1, true);
  }
 		super.create();
+		FlxG.mouse.useSystemCursor = true;
 		_background = new FlxSprite();
 		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();
