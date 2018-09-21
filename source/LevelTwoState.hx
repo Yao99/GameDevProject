@@ -128,9 +128,8 @@ class LevelTwoState extends FlxState {
 
 	override public function update(elapsed:Float):Void
 	{
-		//FlxG.collide(_player, _mWalls);
-		//trace(_mWalls.overlapsWithCallback(_player));
-		trace(_mExpand.overlapsWithCallback(_player));
+		FlxG.collide(_player, _mWalls);
+		//trace(_mExpand.overlapsWithCallback(_player));
 		if (_mExpand.overlapsWithCallback(_player)) {
 			_player.inCloud = true;
 			FlxObject.separate(_player, _mExpand);
@@ -153,7 +152,7 @@ class LevelTwoState extends FlxState {
 		else 
 			_player.touchingWall = false;
 		
-		if (_player.y >= 2025)
+		if (_player.y >= 3750)
 			playerPop();
 
 		//trace(FlxG.overlap(_player, _mSpikes, spikeHit));
@@ -162,6 +161,11 @@ class LevelTwoState extends FlxState {
 		if (_player.overlaps(_key))
 			collectKey();
 
+		/*if (_player.overlaps(_fSpikes))
+			playerPop();
+			
+		if (_player.overlaps(_fSpikes1))
+			playerPop();*/
 		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);

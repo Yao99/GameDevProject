@@ -158,18 +158,18 @@
 			specSnake = specElephant = specSquirrel = specFrog = false;
 			if (species == 3) {
 				specSnake = true;
-			} else if (species == 1) {
-				specElephant = true;
 			} else if (species == 2) {
+				specElephant = true;
+			} else if (species == 1) {
 				specSquirrel = true;
+				//expandTime = 10;
 			} else 
 				specFrog = true;
 			specTimer.start(expandTime, function(Timer:FlxTimer) {specSnake = specElephant = specSquirrel = specFrog = false;}, 1);
 			
 		}
 
-		acceleration.x = 0;
-		acceleration.y = gravity;
+		
 		
 		/*if (touchingFloor && !inflated && velocity.x == 0){
 			animation.play("idle");
@@ -213,7 +213,9 @@
  					else 
  						animation.play("slowWalk");*/
  				} else if (!touchingFloor && specSquirrel) {
- 					acceleration.y = gravity / 10;
+ 					//while (!touchingFloor)
+	 				acceleration.y = 0;
+	 				velocity.y = 50;
  					animation.play("glide");
  				} else if (animation.name == "exhale" && animation.finished)
  						animation.play("walk");
@@ -238,6 +240,8 @@
 			}
 	
 		}
+		if (touchingFloor)
+			specSquirrel = false;
 
  		//reset !!!!!!!!!!!!!!!!REMOVE LATER!!!!!!!!!!!!!!!!!!	
  		if (FlxG.keys.pressed.BACKSPACE) {
@@ -247,7 +251,14 @@
 			specSnake = specElephant = specSquirrel = specFrog = false;
  		}
 		
-		velocity.y = FlxMath.lerp(velocity.y, maxVelocity.y, .01);
+		acceleration.x = 0;
+		if (!specSquirrel || touchingFloor || (_left && _right) || !(_left || _right)) {
+			acceleration.y = gravity;
+			velocity.y = FlxMath.lerp(velocity.y, maxVelocity.y, .01);
+		}
+
+		trace(acceleration.y);
+		
 
 		/*if (y >= 3750)
 			kill();*/
@@ -291,6 +302,7 @@
         } else if (species == 1) {
          	loadGraphic("assets/images/squirrelAnimations.png", true, 76, 85);
          	setFacingFlip(FlxObject.LEFT, true, false);
+         	setFacingFlip(FlxObject.RIGHT, false, false);
          	animation.add("glide", [8, 9, 8, 9], 1, true);
 			animation.add("walk", [0, 6], 4, true);
 			animation.add("slowWalk", [0, 6], 2, true);
