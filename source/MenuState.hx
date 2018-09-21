@@ -30,7 +30,7 @@ class MenuState extends FlxState
 		add(_background);
 
 		title = new FlxSprite();
-		title.loadGraphic("assets/images/title.png", false, 750, 150);
+		title.loadGraphic("assets/images/title1.png", false, 750, 150);
 		title.screenCenter();
 		title.y -= 300;
 		add(title);
