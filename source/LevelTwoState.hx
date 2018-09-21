@@ -33,6 +33,7 @@ class LevelTwoState extends FlxState {
 	var _quitButton:FlxButton;
 	var _key:Key;
 	var _fSpikes:FloatySpikes;
+	var done:Bool = false;
 	
 	override public function create():Void {
 		//load in first map
@@ -263,6 +264,7 @@ class LevelTwoState extends FlxState {
 	}
 	
 	public function levelWin():Void {
+		if(!done){
 		var _thanks = new FlxButton(0, 0);
 		_thanks.loadGraphic("assets/images/recruitText.png", false, 225, 150);
 		_thanks.screenCenter();
@@ -277,6 +279,8 @@ class LevelTwoState extends FlxState {
 		_quitButton.screenCenter();
 		_quitButton.y += 25;
 		add(_quitButton);
+		}
+		done = true;
 	}
 
 	function grounded(object1:FlxObject, object2:FlxObject):Void {
