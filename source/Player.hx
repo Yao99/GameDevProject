@@ -26,6 +26,8 @@
 	public var gameOver:FlxSound;
 	public var has_key:Bool = false;
 	public var floating:Bool = false;
+	public var floatingLeft:Bool = false;
+	public var pause:Bool = false;
 
 	private var xlimit:Float = 250;
  	private var ylimit:Float = 800;	
@@ -103,11 +105,13 @@
      	var _left = false;
      	var _right = false;
      	var _jump = false;
+     	pause = false;
      	//var gravity = 600;
 
  		_left = FlxG.keys.anyPressed([LEFT, A]);
  		_right = FlxG.keys.anyPressed([RIGHT, D]);
  		_jump = FlxG.keys.justPressed.SPACE;
+ 		pause = FlxG.keys.pressed.ESCAPE;
 
  		if (FlxG.keys.justPressed.ONE){
 			if (species != 0) {
@@ -206,14 +210,16 @@
  				facing = FlxObject.RIGHT;	
  			}
 			
-			if (_left || _right && !(_left && _right)){
+			if (_left || _right && !(_left && _right)) {
 				if (inflated) {
  					velocity.x /= 1.5;
 					/*if (animation.name == "inhale" && animation.finished)
  						animation.play("slowWalk");
  					else 
  						animation.play("slowWalk");*/
- 				} else if (!touchingFloor && specSquirrel) {
+ 				} else if (floatingLeft)
+ 					velocity.x /= 2;
+ 				else if (!touchingFloor && specSquirrel) {
  					//while (!touchingFloor)
 	 				acceleration.y = 0;
 	 				velocity.y = 50;
@@ -224,7 +230,8 @@
  					animation.play("walk");
 			}
  		} else {
-			if (touchingFloor && velocity.x == 0) {
+			if (touchingFloor && !(_jump || (_left || _right && !(_left && _right)))) {
+				if ((animation.name == "jump" && animation.finished) || animation.name != "jump")
 				if (!inflated) {
 					if (animation.name == "exhale" && animation.finished){
 						animation.play("idle");
@@ -252,7 +259,7 @@
 			specSnake = specElephant = specSquirrel = specFrog = false;
  		}
 */		
-		//acceleration.x = 0;
+		
 		if (!specSquirrel || touchingFloor || (_left && _right) || !(_left || _right)) {
 			acceleration.y = gravity;
 			if (!floating)
@@ -260,8 +267,11 @@
 		}
 		if (floating)
 			acceleration.y = -100;
+		if (floatingLeft)
+			acceleration.x = -500;
+		else 
+			acceleration.x = 0;
 
-		
     }
 
 	public function speciesSetup():Void {

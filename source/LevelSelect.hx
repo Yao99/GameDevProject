@@ -7,10 +7,11 @@ import flixel.FlxSprite;
 
 class LevelSelect extends FlxState
 {
-	var _level1button: FlxButton;
-	var _level2button: FlxButton;
-	var _level3button: FlxButton;
-	var _level4button: FlxButton;
+	var _level1button:FlxButton;
+	var _level2button:FlxButton;
+	var _level3button:FlxButton;
+	var _level4button:FlxButton;
+	var _background:FlxSprite;
 	
 	override public function create():Void
 	{
@@ -19,22 +20,27 @@ class LevelSelect extends FlxState
      FlxG.sound.playMusic(AssetPaths.mainMenu__wav, 1, true);
  }
 		super.create();
-		_level1button = new FlxSprite(0,0,"Level One",lvl1);
+		_background = new FlxSprite();
+		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
+		_background.screenCenter();
+		add(_background);
+
+		_level1button = new FlxButton(0,0,"Level One",lvl1);
 		_level1button.screenCenter();
 		_level1button.y -= 60;
 		add(_level1button);
 		
-		_level2button = new FlxSprite(0,0,"Level Two",lvl2);
+		_level2button = new FlxButton(0,0,"Level Two",lvl2);
 		_level2button.screenCenter();
 		_level2button.y -= 20;
 		add(_level2button);
 		
-		_level3button = new FlxSprite(0,0,"Level Three",lvl3);
+		_level3button = new FlxButton(0,0,"Level Three",lvl3);
 		_level3button.screenCenter();
 		_level3button.y += 20;
 		add(_level3button);
 		
-		_level4button = new FlxSprite(0,0,"Level Four",lvl4);
+		_level4button = new FlxButton(0,0,"Level Four",lvl4);
 		_level4button.screenCenter();
 		_level4button.y += 60;
 		add(_level4button);
@@ -42,6 +48,8 @@ class LevelSelect extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
+		if (FlxG.keys.pressed.ESCAPE)
+			FlxG.switchState(new MenuState());
 		super.update(elapsed);
 	}
 	
