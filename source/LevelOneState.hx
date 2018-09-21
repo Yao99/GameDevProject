@@ -40,7 +40,7 @@ class LevelOneState extends FlxState {
 		if (FlxG.sound.music == playing) // don't restart the music if it's already playing
  {
      FlxG.sound.music.destroy;
-	 FlxG.sound.playMusic(AssetPaths.mainMenu__wav, 1, true);
+	 FlxG.sound.playMusic(AssetPaths.frogSong__wav, 1, true);
  }
         FlxG.sound.playMusic(AssetPaths.frogSong__wav, 1, true);
 		//load in first map
