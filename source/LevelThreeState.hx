@@ -34,6 +34,11 @@ class LevelThreeState extends FlxState {
 	var _key:Key;
 	var _fSpikes:FloatySpikes;
 	var _fSpikes1:FloatySpikes;
+	var _fSpikes2:FloatySpikes;
+	var _fSpikes3:FloatySpikes;
+	var _fSpikes4:FloatySpikes;
+	var _fSpikes5:FloatySpikes;
+	var done:Bool = false;
 	
 	override public function create():Void {
 		//load in first map
@@ -96,11 +101,20 @@ class LevelThreeState extends FlxState {
 		_background.screenCenter();
 		add(_background);
 		
-		_fSpikes = new FloatySpikes(6*75, 8*75, 0, 3, 6*75,6*75,10*75,6*75);
+		_fSpikes = new FloatySpikes(6*75, 6*75, 3, 0, 10*75,2*75,6*75,6*75);
 		add(_fSpikes);
-
-		_fSpikes1 = new FloatySpikes(18*75, 17*75, 3, 0, 22*75,14*75,17*75,17*75,true);
+		_fSpikes1 = new FloatySpikes(6*75, 8*75, 3, 0, 10*75,2*75,8*75,8*75);
 		add(_fSpikes1);
+		_fSpikes2 = new FloatySpikes(6*75, 10*75, 3, 0, 10*75,2*75,10*75,10*75);
+		add(_fSpikes2);
+		
+		_fSpikes3 = new FloatySpikes(14*75, 17*75, 0, 3, 14*75,14*75,21*75,13*75);
+		add(_fSpikes3);
+		_fSpikes4 = new FloatySpikes(18*75, 17*75, 0, 3, 18*75,18*75,21*75,13*75);
+		add(_fSpikes4);
+		_fSpikes5 = new FloatySpikes(22*75, 17*75, 0, 3, 22*75,22*75,21*75,13*75);
+		add(_fSpikes5);
+		
 		
 		
 		_mWalls.immovable = true;
@@ -184,7 +198,9 @@ class LevelThreeState extends FlxState {
 			
 		if (_player.overlaps(_fSpikes1))
 			playerPop();*/
-		if (_player.overlaps(_fSpikes) || _player.overlaps(_fSpikes1))
+		if (_player.overlaps(_fSpikes) || _player.overlaps(_fSpikes1)
+		|| _player.overlaps(_fSpikes2) || _player.overlaps(_fSpikes3)
+		|| _player.overlaps(_fSpikes4) || _player.overlaps(_fSpikes5))
 			playerPop();
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
@@ -271,6 +287,7 @@ class LevelThreeState extends FlxState {
 	}
 	
 	public function levelWin():Void {
+		if(!done){
 		var _thanks = new FlxButton(0, 0);
 		_thanks.loadGraphic("assets/images/recruitText.png", false, 225, 150);
 		_thanks.screenCenter();
@@ -285,6 +302,8 @@ class LevelThreeState extends FlxState {
 		_quitButton.screenCenter();
 		_quitButton.y += 25;
 		add(_quitButton);
+		}
+		done = true;
 	}
 
 	function grounded(object1:FlxObject, object2:FlxObject):Void {

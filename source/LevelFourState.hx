@@ -37,6 +37,7 @@ class LevelFourState extends FlxState {
 	var _fSpikes1:FloatySpikes;
 	var trophy:FlxSprite;
 	var victoryMessage:FlxText;
+	var done:Bool = false;
 	
 	override public function create():Void {
 		//load in first map
@@ -280,11 +281,12 @@ class LevelFourState extends FlxState {
 	}
 	
 	public function levelWin():Void {
-		/*var _thanks = new FlxButton(0, 0);
+		if(!done){
+		var _thanks = new FlxButton(0, 0);
 		_thanks.loadGraphic("assets/images/recruitText.png", false, 225, 150);
 		_thanks.screenCenter();
 		_thanks.y -= 100;
-		add(_thanks);*/
+		add(_thanks);
 		_player.destroy();
 		trophy.destroy();
 		/*victoryMessage = new FlxText(0, 0, FlxG.width, "Congrats: You win!", 64);
@@ -298,6 +300,8 @@ class LevelFourState extends FlxState {
 		_quitButton.screenCenter();
 		_quitButton.y += 25;
 		add(_quitButton);
+		}
+		done = true;
 	}
 
 	function grounded(object1:FlxObject, object2:FlxObject):Void {
