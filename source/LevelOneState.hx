@@ -52,6 +52,7 @@ class LevelOneState extends FlxState {
 		//_mWalls.setTileProperties(1, FlxObject.ANY);
 		for (i in 17...32)
 			_mWalls.setTileProperties(i, FlxObject.ANY);
+		_mWalls.setTileProperties(36, FlxObject.NONE);
 		/*for (i in 32...36)
 			_mWalls.setTileProperties(i, FlxObject.NONE);*/
 
