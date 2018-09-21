@@ -41,10 +41,10 @@ class LevelFourState extends FlxState {
 	
 	override public function create():Void {
 		
-		if (FlxG.sound.music == playing) // don't restart the music if it's already playing
+		if (FlxG.sound.music != null) // don't restart the music if it's already playing
  {
      FlxG.sound.music.destroy;
-	 FlxG.sound.playMusic(AssetPaths.snakeSong__wav, 1, true);
+	
  }
         FlxG.sound.playMusic(AssetPaths.snakeSong__wav, 1, true);
 		
