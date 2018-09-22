@@ -280,7 +280,7 @@ class LevelThreeState extends FlxState {
 			_restartButton = new FlxButton(0, 0, "Restart", reload);
 			_restartButton.screenCenter();
 			add(_restartButton);
-			_quitButton = new FlxButton(0, 0, "Quit", quit);
+			_quitButton = new FlxButton(0, 0, "Menu", quit);
 			_quitButton.screenCenter();
 			_quitButton.y += 25;
 			add(_quitButton);
@@ -305,7 +305,7 @@ class LevelThreeState extends FlxState {
 		var _nextButton = new FlxButton(0, 0, "Next", nextlevel);
 		_nextButton.screenCenter();
 		add(_nextButton);
-		var _quitButton = new FlxButton(0, 0, "Quit", quit);
+		var _quitButton = new FlxButton(0, 0, "Menu", quit);
 		_quitButton.screenCenter();
 		_quitButton.y += 25;
 		add(_quitButton);

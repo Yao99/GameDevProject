@@ -6,6 +6,7 @@ import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.addons.editors.tiled.*;
 import flixel.addons.tile.*;
+import flixel.addons.ui.FlxButtonPlus;
 import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
 import flixel.math.FlxPoint;
@@ -33,6 +34,7 @@ class LevelOneState extends FlxState {
 	var dying:Bool = false;
 	var _restartButton:FlxButton;
 	var _quitButton:FlxButton;
+	var _resumeButton:FlxButton;
 	var _key:Key;
 	var done:Bool = false;
 	
@@ -188,6 +190,10 @@ class LevelOneState extends FlxState {
 		if (_player.overlaps(_fSpikes1))
 			playerPop();
 		
+		/*if (_player.pause)
+			pauseMenu();*/
+		//trace(_player.pause);
+		
 		//FlxG.overlap(_player,_key, collectKey);
 		super.update(elapsed);
 		/*_player.touchingFloor = false;
@@ -249,6 +255,20 @@ class LevelOneState extends FlxState {
 		//display gameover message and return to menuState
 	}
 
+	function pauseMenu():Void {
+		_restartButton = new FlxButton(0, 0, "Restart", reload);
+		_restartButton.screenCenter();
+		_restartButton.y -= 25;
+		add(_restartButton);
+		_resumeButton = new FlxButton(0, 0, "Resume", resume);
+		_resumeButton.screenCenter();
+		add(_resumeButton);
+		_quitButton = new FlxButton(0, 0, "Menu", quit);
+		_quitButton.screenCenter();
+		_quitButton.y += 25;
+		add(_quitButton);
+	}
+
 
 	public function deathCheck():Void {
 		deathTimer.start(0.875, function(Timer:FlxTimer) {
@@ -258,7 +278,7 @@ class LevelOneState extends FlxState {
 			_restartButton = new FlxButton(0, 0, "Restart", reload);
 			_restartButton.screenCenter();
 			add(_restartButton);
-			_quitButton = new FlxButton(0, 0, "Quit", quit);
+			_quitButton = new FlxButton(0, 0, "Menu", quit);
 			_quitButton.screenCenter();
 			_quitButton.y += 25;
 			add(_quitButton);
@@ -288,7 +308,7 @@ class LevelOneState extends FlxState {
 		var _nextButton = new FlxButton(0, 0, "Next", nextlevel);
 		_nextButton.screenCenter();
 		add(_nextButton);
-		var _quitButton = new FlxButton(0, 0, "Quit", quit);
+		var _quitButton = new FlxButton(0, 0, "Menu", quit);
 		_quitButton.screenCenter();
 		_quitButton.y += 25;
 		add(_quitButton);
@@ -310,6 +330,13 @@ class LevelOneState extends FlxState {
 		_restartButton.kill();
 		_quitButton.kill();
 		_player.speciesSetup();*/
+	}
+
+	function resume():Void {
+		_player.pause = false;
+		_restartButton.kill();
+		_resumeButton.kill();
+		_quitButton.kill();
 	}
 	
 	function quit() {

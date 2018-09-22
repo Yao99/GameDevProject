@@ -11,6 +11,7 @@ class MenuState extends FlxState
 	var _background:FlxSprite;
 	var _exitButton:FlxButton;
 	var _selectButton:FlxButton;
+	var title:FlxSprite;
 	
 	override public function create():Void
 	{
@@ -27,6 +28,12 @@ class MenuState extends FlxState
 		_background.loadGraphic("assets/images/BackgroundTitle.png", true, 1350, 750);
 		_background.screenCenter();
 		add(_background);
+
+		title = new FlxSprite();
+		title.loadGraphic("assets/images/title1.png", false, 750, 150);
+		title.screenCenter();
+		title.y -= 300;
+		add(title);
 		
 		_playButton = new FlxButton(0, 0, clickPlay);
 		_playButton.loadGraphic("assets/images/play.png", true, 300, 150);

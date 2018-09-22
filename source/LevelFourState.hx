@@ -34,7 +34,7 @@ class LevelFourState extends FlxState {
 	var _quitButton:FlxButton;
 	var _key:Key;
 	var _fSpikes:FloatySpikes;
-	var _fSpikes1:FloatySpikes;
+	var _fSpikes1:FloatySpikes;	 		
 	var trophy:FlxSprite;
 	var victoryMessage:FlxText;
 	var done:Bool = false;
@@ -275,7 +275,7 @@ class LevelFourState extends FlxState {
 			_restartButton = new FlxButton(0, 0, "Restart", reload);
 			_restartButton.screenCenter();
 			add(_restartButton);
-			_quitButton = new FlxButton(0, 0, "Quit", quit);
+			_quitButton = new FlxButton(0, 0, "Menu", quit);
 			_quitButton.screenCenter();
 			_quitButton.y += 25;
 			add(_quitButton);
@@ -291,7 +291,7 @@ class LevelFourState extends FlxState {
 	public function levelWin():Void {
 		if(!done){
 		var _thanks = new FlxButton(0, 0);
-		_thanks.loadGraphic("assets/images/recruitText.png", false, 225, 150);
+		_thanks.loadGraphic("assets/images/congrats.png", false, 600, 150);
 		_thanks.screenCenter();
 		_thanks.y -= 100;
 		add(_thanks);
@@ -303,10 +303,11 @@ class LevelFourState extends FlxState {
 		add(victoryMessage);*/
 		var _nextButton = new FlxButton(0, 0, "Play Again", nextlevel);
 		_nextButton.screenCenter();
+		_nextButton.y += 100;
 		add(_nextButton);
-		var _quitButton = new FlxButton(0, 0, "Quit", quit);
+		var _quitButton = new FlxButton(0, 0, "Menu", quit);
 		_quitButton.screenCenter();
-		_quitButton.y += 25;
+		_quitButton.y += 125;
 		add(_quitButton);
 		}
 		done = true;
